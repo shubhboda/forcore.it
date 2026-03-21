@@ -42,6 +42,6 @@ export const services = [
     id: 6,
     icon: Lightbulb,
     title: "Consulting & Strategy",
-    description: "Tech audits, architecture planning, roadmaps",
+    description: "We take businesses from Day 1 startups to enterprise scale. Tech audits, architecture planning & roadmaps — backed by our dedicated team.",
   },
 ];

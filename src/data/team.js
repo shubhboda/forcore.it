@@ -7,7 +7,7 @@ export const teamMembers = [
     photoFallback: "https://shubh-cv-kqi2.vercel.app/assets/shubh_profile.jpg",
     bio: "Visionary leader & full-stack developer driving our mission to build intelligent software for the world.",
     skills: ["Full Stack Dev", "Project Management", "AI Integration", "DSA"],
-    stats: "1+ yr Experience · 10+ Projects · 150+ DSA Solved",
+    stats: "10+ Projects · 150+ DSA Solved",
     portfolio: "https://shubh-cv-kqi2.vercel.app/",
     linkedin: "#",
     github: "#",
@@ -31,10 +31,10 @@ export const teamMembers = [
     name: "Nishil Chopda",
     role: "AI Engineer",
     photo: "/images/team/nishil.jpg",
-    photoFallback: null, // Show initials avatar
+    photoFallback: null, // Show NC initials avatar if no local photo
     bio: "AI specialist building intelligent systems, automation pipelines, and smart integrations that make software think.",
     skills: ["Machine Learning", "Python", "LLMs", "AI Integration", "Automation"],
-    portfolio: null, // No link - hide portfolio button
+    portfolio: "https://nishil-cv.vercel.app/",
     linkedin: "#",
     github: "#",
   },

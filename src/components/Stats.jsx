@@ -1,75 +1,35 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import CountUp from "react-countup";
 import { Sparkles } from "lucide-react";
 
 const stats = [
-  { value: 20, suffix: "+", label: "Projects Delivered" },
-  { value: 100, suffix: "%", label: "Client Satisfaction" },
-  { value: 4, suffix: "", label: "Countries Served" },
+  { value: "100%", label: "Client Satisfaction" },
+  { value: "4", label: "Countries Served" },
   { value: null, icon: Sparkles, label: "AI-First Approach" },
 ];
 
 const testimonials = [
-  {
-    name: "Sarah Mitchell",
-    country: "🇺🇸 USA",
-    rating: 5,
-    quote: "Exceptional work on our AI chatbot. Delivered ahead of schedule with zero compromise on quality.",
-  },
-  {
-    name: "James Chen",
-    country: "🇬🇧 UK",
-    rating: 5,
-    quote: "The team understood our vision perfectly. Highly recommend for any tech project.",
-  },
-  {
-    name: "Emma Foster",
-    country: "🇦🇺 Australia",
-    rating: 5,
-    quote: "Professional, responsive, and skilled. Our dashboard is exactly what we needed.",
-  },
+  { name: "Sarah Mitchell", country: "🇺🇸 USA", rating: 5, quote: "Exceptional work on our AI chatbot. Delivered ahead of schedule with zero compromise on quality." },
+  { name: "James Chen", country: "🇬🇧 UK", rating: 5, quote: "The team understood our vision perfectly. Highly recommend for any tech project." },
+  { name: "Emma Foster", country: "🇦🇺 Australia", rating: 5, quote: "Professional, responsive, and skilled. Our dashboard is exactly what we needed." },
 ];
 
 export default function Stats() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
   return (
-    <section ref={ref} className="py-24 px-6 bg-[#0d0d1a]/50">
+    <section className="py-24 px-6 bg-[#0d0d1a]">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white mb-4">
             Why Choose Us
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Numbers that speak for themselves — and clients who vouch for us.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="text-center"
-            >
+            <div key={index} className="text-center">
               {stat.value !== null ? (
-                <div className="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">
-                  {isInView ? (
-                    <CountUp end={stat.value} duration={2} suffix={stat.suffix} />
-                  ) : (
-                    "0"
-                  )}
-                </div>
+                <div className="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">{stat.value}</div>
               ) : (
                 <div className="flex justify-center mb-2">
                   {(() => {
@@ -79,35 +39,24 @@ export default function Stats() {
                 </div>
               )}
               <p className="text-gray-400 text-sm">{stat.label}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="p-6 rounded-2xl bg-white/[0.02] border border-white/5"
-            >
+            <div key={index} className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="text-yellow-400">
-                    ★
-                  </span>
+                  <span key={i} className="text-yellow-400">★</span>
                 ))}
               </div>
-              <p className="text-gray-300 text-sm mb-4 italic">
-                "{testimonial.quote}"
-              </p>
+              <p className="text-gray-300 text-sm mb-4 italic">&quot;{testimonial.quote}&quot;</p>
               <div className="flex items-center gap-2">
                 <span className="text-white font-medium">{testimonial.name}</span>
                 <span className="text-gray-500">{testimonial.country}</span>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
