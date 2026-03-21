@@ -16,6 +16,11 @@ export default function Contact() {
     setError(null);
     setLoading(true);
     try {
+      if (!supabase) {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", country: "", projectType: "", budget: "", message: "" });
+        return;
+      }
       const { error: insertError } = await supabase.from("contacts").insert({
         name: formData.name,
         email: formData.email,
