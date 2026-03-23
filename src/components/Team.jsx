@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ExternalLink, X, Linkedin, Github, Mail } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { teamMembers } from "../data/team";
 
 export default function Team() {
@@ -8,33 +9,43 @@ export default function Team() {
   return (
     <section id="team" className="py-24 px-6 bg-[#0a0a0f]">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white mb-4">
             Meet the Team
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Student founders building world-class software from India.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {teamMembers.map((member) => (
-            <div
+          {teamMembers.map((member, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               key={member.id}
-              className="rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 cursor-pointer"
+              className="group rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 cursor-pointer transition-all hover:-translate-y-2 hover:bg-white/[0.04]"
               onClick={() => setSelectedMember(member)}
             >
               <div className="flex flex-col items-center text-center">
-                <div className="relative mb-4">
+                <div className="relative mb-4 overflow-hidden rounded-full">
                   {member.photoFallback === null ? (
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/30 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                       <span className="text-2xl font-bold text-cyan-400">NC</span>
                     </div>
                   ) : (
                     <img
                       src={member.photo}
                       alt={member.name}
-                      className="w-24 h-24 rounded-full object-cover border-2 border-white/10"
+                      className="w-24 h-24 rounded-full object-cover border-2 border-white/10 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-500"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = member.photoFallback || "";
@@ -42,12 +53,12 @@ export default function Team() {
                     />
                   )}
                 </div>
-                <h3 className="font-[family-name:var(--font-syne)] text-lg font-semibold text-white">{member.name}</h3>
+                <h3 className="font-[family-name:var(--font-syne)] text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">{member.name}</h3>
                 <p className="text-cyan-400 text-sm mb-3">{member.role}</p>
                 <p className="text-gray-400 text-sm mb-4 line-clamp-3">{member.bio}</p>
                 <div className="flex flex-wrap gap-2 justify-center mb-4">
                   {member.skills.map((skill) => (
-                    <span key={skill} className="px-2 py-0.5 rounded-full text-xs bg-white/5 text-gray-400">
+                    <span key={skill} className="px-2 py-0.5 rounded-full text-xs bg-white/5 text-gray-400 border border-white/10 group-hover:border-cyan-400/20 transition-colors">
                       {skill}
                     </span>
                   ))}
@@ -59,18 +70,19 @@ export default function Team() {
                       e.stopPropagation();
                       window.open(member.portfolio, "_blank");
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/20 text-cyan-400 text-sm hover:bg-cyan-500/30"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 text-sm hover:bg-cyan-500 hover:text-black transition-colors"
                   >
                     View Portfolio
                     <ExternalLink className="w-4 h-4" />
                   </button>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
+      <AnimatePresence>
       {selectedMember && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90"
@@ -144,6 +156,7 @@ export default function Team() {
           </div>
         </div>
       )}
+      </AnimatePresence>
     </section>
   );
 }

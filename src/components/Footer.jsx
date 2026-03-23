@@ -1,4 +1,5 @@
 import { Zap, Linkedin, Github, Twitter, Instagram } from "lucide-react";
+import { motion } from "framer-motion";
 
 const quickLinks = [
   { href: "#services", label: "Services" },
@@ -19,14 +20,20 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/5 bg-[#0a0a0f]">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-12"
+        >
           <div>
             <a href="#home" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
                 <Zap className="w-4 h-4 text-white" />
               </div>
               <span className="font-[family-name:var(--font-syne)] font-bold text-lg text-white">
-                Madhav
+                forcore.it
               </span>
             </a>
             <p className="text-gray-400 text-sm">
@@ -65,10 +72,10 @@ export default function Footer() {
               })}
             </div>
           </div>
-        </div>
+        </motion.div>
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-sm">
-            © 2025 Madhav. All rights reserved.
+            © 2025 forcore.it. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-gray-500 hover:text-gray-400 text-sm">

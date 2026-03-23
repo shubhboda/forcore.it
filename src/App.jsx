@@ -1,28 +1,37 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Process from "./components/Process";
-import Projects from "./components/Projects";
-import Pricing from "./components/Pricing";
-import Team from "./components/Team";
-import Stats from "./components/Stats";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AdminRoute } from "./components/ProtectedRoute";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminMessages from "./pages/admin/AdminMessages";
+import AdminProjects from "./pages/admin/AdminProjects";
+import AdminPlans from "./pages/admin/AdminPlans";
+import AdminUsers from "./pages/admin/AdminUsers";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <main className="min-h-screen bg-[#0a0a0f] w-full">
-      <Navbar />
-      <Hero />
-      <Services />
-      <Process />
-      <Projects />
-      <Pricing />
-      <Team />
-      <Stats />
-      <Contact />
-      <Footer />
-    </main>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="messages" element={<AdminMessages />} />
+        <Route path="projects" element={<AdminProjects />} />
+        <Route path="plans" element={<AdminPlans />} />
+        <Route path="users" element={<AdminUsers />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

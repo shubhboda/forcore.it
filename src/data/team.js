@@ -15,7 +15,7 @@ export const teamMembers = [
   {
     id: 2,
     name: "Chopda Darshan",
-    role: "Lead Developer",
+    role: "Co-Founder",
     photo: "/images/team/darshan.jpg",
     photoFallback: "https://darshan-cv.vercel.app/assets/whatsapp_profile.jpg",
     bio: "Full-stack engineer who turns complex requirements into clean, scalable, production-ready code.",
@@ -29,7 +29,7 @@ export const teamMembers = [
   {
     id: 3,
     name: "Nishil Chopda",
-    role: "AI Engineer",
+    role: "Manager",
     photo: "/images/team/nishil.jpg",
     photoFallback: null, // Show NC initials avatar if no local photo
     bio: "AI specialist building intelligent systems, automation pipelines, and smart integrations that make software think.",
@@ -41,7 +41,7 @@ export const teamMembers = [
   {
     id: 4,
     name: "Keyur Nakum",
-    role: "UI/UX Designer",
+    role: "Team Lead",
     photo: "/images/team/keyur.jpg",
     photoFallback: "https://keyur-cv.vercel.app/assets/Keyur.jpg",
     bio: "Designer obsessed with beautiful, intuitive interfaces. Brings every product to life with pixel-perfect UI and UX.",

@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Menu, X, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Menu, X, Zap, LogIn, UserPlus } from "lucide-react";
+import { motion } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -12,16 +15,22 @@ const navLinks = [
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isAdmin, signOut } = useAuth();
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-50 bg-[#0a0a0f] border-b border-white/5">
+    <motion.header 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="sticky top-0 left-0 right-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-white/5"
+    >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
             <Zap className="w-4 h-4 text-white" />
           </div>
           <span className="font-[family-name:var(--font-syne)] font-bold text-lg text-white">
-            Madhav
+            forcore.it
           </span>
         </a>
 
@@ -38,7 +47,40 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          {user ? (
+            <>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10"
+                >
+                  Admin
+                </Link>
+              )}
+              <button
+                onClick={() => signOut()}
+                className="px-4 py-2 text-sm text-gray-400 hover:text-white"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-400 hover:text-cyan-400"
+              >
+                <LogIn className="w-4 h-4" /> Login
+              </Link>
+              <Link
+                to="/signup"
+                className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
           <a
             href="#contact"
             className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10"
@@ -68,6 +110,42 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          {user ? (
+            <>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10 text-center"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Admin Panel
+                </Link>
+              )}
+              <button
+                onClick={() => { signOut(); setIsMobileMenuOpen(false); }}
+                className="px-4 py-2 text-gray-400 text-left w-full"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 py-2 text-gray-300 hover:text-cyan-400"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <LogIn className="w-4 h-4" /> Login
+              </Link>
+              <Link
+                to="/signup"
+                className="flex items-center gap-2 py-2 text-gray-300 hover:text-cyan-400"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <UserPlus className="w-4 h-4" /> Sign Up
+              </Link>
+            </>
+          )}
           <a
             href="#contact"
             className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10 text-center mt-2"
@@ -77,6 +155,6 @@ export default function Navbar() {
           </a>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 }
