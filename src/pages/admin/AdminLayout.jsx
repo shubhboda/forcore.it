@@ -7,12 +7,12 @@ import {
   Users,
   MessageCircle,
   LogOut,
-  Zap,
   Menu,
   X,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import LogoIcon from "../../components/LogoIcon";
 
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -42,11 +42,9 @@ export default function AdminLayout() {
       >
         <div className="flex items-center justify-between p-6 border-b border-white/5">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-[family-name:var(--font-syne)] font-bold text-white">
-              Admin
+            <LogoIcon className="w-8 h-8" />
+            <span className="font-[family-name:var(--font-syne)] font-bold text-white tracking-tight">
+              forcore<span className="text-[#3D87F5]">.it</span> Admin
             </span>
           </div>
           <button

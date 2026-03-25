@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, Zap, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import LogoIcon from "../components/LogoIcon";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
@@ -60,11 +61,9 @@ export default function Login() {
       >
         <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 shadow-xl shadow-black/20">
           <div className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-[family-name:var(--font-syne)] font-bold text-xl text-white">
-              forcore.it
+            <LogoIcon className="w-10 h-10" />
+            <span className="font-[family-name:var(--font-syne)] font-bold text-2xl text-white tracking-tight">
+              forcore<span className="text-[#3D87F5]">.it</span>
             </span>
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>

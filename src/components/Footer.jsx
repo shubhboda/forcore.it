@@ -1,9 +1,9 @@
-import { Zap, Linkedin, Github, Twitter, Instagram } from "lucide-react";
+import { Linkedin, Instagram } from "lucide-react";
+import LogoIcon from "./LogoIcon";
 import { motion } from "framer-motion";
 
 const quickLinks = [
   { href: "#services", label: "Services" },
-  { href: "#projects", label: "Projects" },
   { href: "#pricing", label: "Pricing" },
   { href: "#team", label: "Team" },
   { href: "#contact", label: "Contact" },
@@ -11,9 +11,7 @@ const quickLinks = [
 
 const socialLinks = [
   { href: "#", icon: Linkedin },
-  { href: "#", icon: Github },
-  { href: "#", icon: Twitter },
-  { href: "#", icon: Instagram },
+  { href: "https://www.instagram.com/forcore.it/?hl=en", icon: Instagram },
 ];
 
 export default function Footer() {
@@ -29,11 +27,9 @@ export default function Footer() {
         >
           <div>
             <a href="#home" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-[family-name:var(--font-syne)] font-bold text-lg text-white">
-                forcore.it
+              <LogoIcon className="w-8 h-8" />
+              <span className="font-[family-name:var(--font-syne)] font-bold text-xl text-white tracking-tight">
+                forcore<span className="text-[#3D87F5]">.it</span>
               </span>
             </a>
             <p className="text-gray-400 text-sm">

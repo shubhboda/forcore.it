@@ -20,14 +20,7 @@ export default function Hero() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-400 mb-8"
-        >
-          🚀 Student Founders · AI-First · Global
-        </motion.div>
+
 
         <motion.h1 
           initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
@@ -67,15 +60,6 @@ export default function Hero() {
           >
             Start a Project
             <ArrowRight className="w-4 h-4" />
-          </motion.a>
-          <motion.a
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(34, 211, 238, 0.1)" }}
-            whileTap={{ scale: 0.95 }}
-            href="#projects"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-white/20 text-white font-medium rounded-lg hover:border-cyan-400/50 transition-all"
-          >
-            <Play className="w-4 h-4 text-cyan-400" />
-            See Our Work
           </motion.a>
         </motion.div>
       </div>

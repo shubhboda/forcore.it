@@ -50,4 +50,16 @@ export const teamMembers = [
     linkedin: "#",
     github: "#",
   },
+  {
+    id: 5,
+    name: "Parv Bhalani",
+    role: "HR",
+    photo: "/images/team/parv.jpg",
+    photoFallback: null,
+    bio: "Building digital experiences with code and creativity. Dedicated to identifying and nurturing top tier talent for world-class software.",
+    skills: ["HR Management", "Technical Recruitment", "Communication", "Full Stack Dev"],
+    portfolio: "https://parv-cv.vercel.app/",
+    linkedin: "#",
+    github: "#",
+  },
 ];

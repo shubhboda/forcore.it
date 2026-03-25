@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExternalLink, X, Linkedin, Github, Mail } from "lucide-react";
+import { ExternalLink, X, Linkedin, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { teamMembers } from "../data/team";
 
@@ -39,7 +39,7 @@ export default function Team() {
                 <div className="relative mb-4 overflow-hidden rounded-full">
                   {member.photoFallback === null ? (
                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                      <span className="text-2xl font-bold text-cyan-400">NC</span>
+                      <span className="text-2xl font-bold text-cyan-400">{member.name.split(' ').map(n => n[0]).join('')}</span>
                     </div>
                   ) : (
                     <img
@@ -101,7 +101,7 @@ export default function Team() {
             <div className="flex flex-col items-center text-center">
               {selectedMember.photoFallback === null ? (
                 <div className="w-28 h-28 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/30 flex items-center justify-center mb-4">
-                  <span className="text-3xl font-bold text-cyan-400">NC</span>
+                  <span className="text-3xl font-bold text-cyan-400">{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
                 </div>
               ) : (
                 <img
@@ -141,11 +141,7 @@ export default function Team() {
                     <Linkedin className="w-5 h-5" />
                   </a>
                 )}
-                {selectedMember.github && selectedMember.github !== "#" && (
-                  <a href={selectedMember.github} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-cyan-400">
-                    <Github className="w-5 h-5" />
-                  </a>
-                )}
+
                 {selectedMember.email && (
                   <a href={`mailto:${selectedMember.email}`} className="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-cyan-400">
                     <Mail className="w-5 h-5" />

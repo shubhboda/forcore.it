@@ -102,9 +102,20 @@ export function AuthProvider({ children }) {
 
   const signOut = async () => {
     if (!supabase) return;
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch (error) {
+      console.error("Sign out error:", error);
+    } finally {
+      setUser(null);
+      setProfile(null);
+      // Absolute nuclear cleanup: clear all local storage
+      localStorage.clear();
+      // Force a hard reload to the login page to guarantee state is wiped from memory
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 50);
+    }
   };
 
   const value = {
