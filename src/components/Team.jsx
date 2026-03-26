@@ -24,14 +24,14 @@ export default function Team() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {teamMembers.map((member, index) => (
+        {(() => {
+          const renderCard = (member, index) => (
             <motion.div
+              key={member.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              key={member.id}
               className="group rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 cursor-pointer transition-all hover:-translate-y-2 hover:bg-white/[0.04]"
               onClick={() => setSelectedMember(member)}
             >
@@ -78,8 +78,19 @@ export default function Team() {
                 )}
               </div>
             </motion.div>
-          ))}
-        </div>
+          );
+
+          return (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                {teamMembers.slice(0, 2).map((member, index) => renderCard(member, index))}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamMembers.slice(2).map((member, index) => renderCard(member, index + 2))}
+              </div>
+            </>
+          );
+        })()}
       </div>
 
       <AnimatePresence>
