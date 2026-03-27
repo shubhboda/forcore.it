@@ -23,7 +23,7 @@ const navItems = [
 ];
 
 export default function AdminLayout() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, profile } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -83,7 +83,7 @@ export default function AdminLayout() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{user?.email}</p>
-              <p className="text-xs text-cyan-400">Admin</p>
+              <p className="text-xs text-cyan-400">{(profile?.role || "admin").toString()}</p>
             </div>
           </div>
           <button

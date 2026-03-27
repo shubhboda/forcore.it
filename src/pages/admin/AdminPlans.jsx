@@ -22,8 +22,13 @@ export default function AdminPlans() {
 
   async function fetchPlans() {
     setLoading(true);
+    if (!supabase) {
+      setPlans([]);
+      setLoading(false);
+      return;
+    }
     const { data, error } = await supabase
-      ?.from("plans")
+      .from("plans")
       .select("*")
       .order("sort_order", { ascending: true });
     if (!error) setPlans(data ?? []);

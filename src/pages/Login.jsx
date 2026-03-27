@@ -27,10 +27,16 @@ export default function Login() {
     try {
       const { data, error: err } = await signIn(email, password);
       if (err) throw err;
-      const isAdminUser = data?.user?.email === "support.forcor.it@gmail.com";
+      const isAdminUser = (data?.user?.email || "").toLowerCase() === "shubhboda@gmail.com";
       navigate(isAdminUser ? "/admin" : "/", { replace: true });
     } catch (err) {
-      setError(err.message || "Login failed");
+      const msg =
+        err?.message ||
+        (typeof err === "string" ? err : "") ||
+        "Login failed";
+      const code = err?.code ? ` (${err.code})` : "";
+      const status = typeof err?.status === "number" ? ` [${err.status}]` : "";
+      setError(`${msg}${code}${status}`);
     } finally {
       setSubmitting(false);
     }

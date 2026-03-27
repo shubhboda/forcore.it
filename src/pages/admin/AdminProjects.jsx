@@ -19,8 +19,13 @@ export default function AdminProjects() {
 
   async function fetchProjects() {
     setLoading(true);
+    if (!supabase) {
+      setProjects([]);
+      setLoading(false);
+      return;
+    }
     const { data, error } = await supabase
-      ?.from("projects")
+      .from("projects")
       .select("*")
       .order("sort_order", { ascending: true });
     if (!error) setProjects(data ?? []);

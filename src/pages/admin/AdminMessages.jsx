@@ -6,15 +6,27 @@ export default function AdminMessages() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
+  const [error, setError] = useState("");
 
   async function fetchMessages() {
-    if (!supabase) return;
-    const { data, error } = await supabase
-      .from("contacts")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error) setMessages(data ?? []);
-    setLoading(false);
+    setLoading(true);
+    setError("");
+    try {
+      if (!supabase) {
+        setMessages([]);
+        return;
+      }
+      const { data, error: err } = await supabase
+        .from("contacts")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (err) throw err;
+      setMessages(data ?? []);
+    } catch (e) {
+      setError(e?.message || "Failed to load messages.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -47,6 +59,19 @@ export default function AdminMessages() {
         <h2 className="text-2xl font-bold text-white">Messages</h2>
         <p className="text-gray-400">User messages from the contact form (updates in real-time)</p>
       </div>
+
+      {error && (
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          {error}
+          <button
+            type="button"
+            onClick={fetchMessages}
+            className="ml-3 inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-200 hover:border-cyan-400/30 hover:text-white text-xs"
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto">

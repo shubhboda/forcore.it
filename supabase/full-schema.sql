@@ -1,7 +1,7 @@
 -- ============================================
 -- FORCOR.IT - Complete Supabase Schema
 -- Run in Supabase SQL Editor (Dashboard > SQL Editor)
--- Admin: support.forcor.it@gmail.com
+-- Admin: shubhboda@gmail.com
 -- ============================================
 
 -- 1. CONTACTS (messages from User Panel contact form)
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS contacts (
 ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow public insert contacts" ON contacts FOR INSERT WITH CHECK (true);
 CREATE POLICY "Admin read contacts" ON contacts FOR SELECT USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 2. PROJECTS (Our Work section)
@@ -37,13 +37,13 @@ CREATE TABLE IF NOT EXISTS projects (
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public read projects" ON projects FOR SELECT USING (true);
 CREATE POLICY "Admin insert projects" ON projects FOR INSERT WITH CHECK (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin update projects" ON projects FOR UPDATE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin delete projects" ON projects FOR DELETE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 3. PLANS (Pricing section)
@@ -63,13 +63,13 @@ CREATE TABLE IF NOT EXISTS plans (
 ALTER TABLE plans ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public read plans" ON plans FOR SELECT USING (true);
 CREATE POLICY "Admin insert plans" ON plans FOR INSERT WITH CHECK (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin update plans" ON plans FOR UPDATE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin delete plans" ON plans FOR DELETE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 4. USER PROFILES
@@ -88,7 +88,7 @@ ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users read own profile" ON user_profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users update own profile" ON user_profiles FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Admin read all profiles" ON user_profiles FOR SELECT USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 5. TRIGGER: Auto-create user_profile on signup
@@ -101,7 +101,7 @@ BEGIN
     NEW.email,
     NEW.raw_user_meta_data->>'full_name',
     NEW.raw_user_meta_data->>'avatar_url',
-    CASE WHEN NEW.email = 'support.forcor.it@gmail.com' THEN 'admin' ELSE 'user' END
+    CASE WHEN NEW.email = 'shubhboda@gmail.com' THEN 'admin' ELSE 'user' END
   );
   RETURN NEW;
 END;
@@ -113,6 +113,6 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- 6. STORAGE: Create bucket "project-images" (public) in Dashboard > Storage
--- Add policies: Public read, Admin upload/delete (auth.jwt()->>'email' = 'support.forcor.it@gmail.com')
+-- Add policies: Public read, Admin upload/delete (auth.jwt()->>'email' = 'shubhboda@gmail.com')
 
 -- 7. REALTIME: Enable in Supabase Dashboard > Database > Replication > add "contacts" table

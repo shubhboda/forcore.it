@@ -9,7 +9,29 @@ const isValidUrl = supabaseUrl.includes("supabase.co") && !supabaseUrl.includes(
 let supabase = null;
 if (isValidUrl && isValidKey) {
   try {
-    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const fetchWithTimeout = (input, init) => {
+      const controller = new AbortController();
+      const timeoutMs = 30000;
+      const id = setTimeout(() => controller.abort(), timeoutMs);
+
+      const mergedInit = {
+        ...(init || {}),
+        signal: controller.signal,
+      };
+
+      return fetch(input, mergedInit).finally(() => clearTimeout(id));
+    };
+
+    supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        fetch: fetchWithTimeout,
+      },
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    });
   } catch (err) {
     console.warn("Supabase init failed:", err.message);
   }

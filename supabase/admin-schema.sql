@@ -52,13 +52,13 @@ ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 -- ============================================
 CREATE POLICY "Public read projects" ON projects FOR SELECT USING (true);
 CREATE POLICY "Admin insert projects" ON projects FOR INSERT WITH CHECK (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin update projects" ON projects FOR UPDATE USING (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin delete projects" ON projects FOR DELETE USING (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- ============================================
@@ -66,13 +66,13 @@ CREATE POLICY "Admin delete projects" ON projects FOR DELETE USING (
 -- ============================================
 CREATE POLICY "Public read plans" ON plans FOR SELECT USING (true);
 CREATE POLICY "Admin insert plans" ON plans FOR INSERT WITH CHECK (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin update plans" ON plans FOR UPDATE USING (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 CREATE POLICY "Admin delete plans" ON plans FOR DELETE USING (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- ============================================
@@ -81,7 +81,7 @@ CREATE POLICY "Admin delete plans" ON plans FOR DELETE USING (
 CREATE POLICY "Users can read own profile" ON user_profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON user_profiles FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Admin can read all profiles" ON user_profiles FOR SELECT USING (
-  auth.jwt() ->> 'email' = 'support.forcore.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- ============================================
@@ -101,7 +101,7 @@ BEGIN
     NEW.email,
     NEW.raw_user_meta_data->>'full_name',
     NEW.raw_user_meta_data->>'avatar_url',
-    CASE WHEN NEW.email = 'support.forcore.it@gmail.com' THEN 'admin' ELSE 'user' END
+    CASE WHEN NEW.email = 'shubhboda@gmail.com' THEN 'admin' ELSE 'user' END
   );
   RETURN NEW;
 END;

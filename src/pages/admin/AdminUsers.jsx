@@ -4,6 +4,7 @@ import { supabase } from "../../lib/supabase";
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!supabase) {
@@ -15,12 +16,23 @@ export default function AdminUsers() {
 
   async function fetchUsers() {
     setLoading(true);
-    const { data, error } = await supabase
-      ?.from("user_profiles")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error) setUsers(data ?? []);
-    setLoading(false);
+    setError("");
+    try {
+      if (!supabase) {
+        setUsers([]);
+        return;
+      }
+      const { data, error: err } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (err) throw err;
+      setUsers(data ?? []);
+    } catch (e) {
+      setError(e?.message || "Failed to load users.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (!supabase) {
@@ -39,6 +51,18 @@ export default function AdminUsers() {
       </div>
 
       <div className="rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden">
+        {error && (
+          <div className="m-4 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+            {error}
+            <button
+              type="button"
+              onClick={fetchUsers}
+              className="ml-3 inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-200 hover:border-cyan-400/30 hover:text-white text-xs"
+            >
+              Retry
+            </button>
+          </div>
+        )}
         {loading ? (
           <div className="p-8 text-center text-gray-400">Loading...</div>
         ) : users.length === 0 ? (

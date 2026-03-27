@@ -29,7 +29,7 @@ export default function Signup() {
       const { data, error: err } = await signUp(email, password, { full_name: fullName });
       if (err) throw err;
       if (data?.user) {
-        const isAdminUser = data.user.email === "support.forcor.it@gmail.com";
+        const isAdminUser = (data.user.email || "").toLowerCase() === "shubhboda@gmail.com";
         navigate(isAdminUser ? "/admin" : "/", { replace: true });
       } else {
         setError("Please check your email to confirm your account.");

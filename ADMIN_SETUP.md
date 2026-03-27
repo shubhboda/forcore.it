@@ -1,7 +1,7 @@
 # Admin Panel Setup Guide
 
 ## Admin Email
-**support.forcor.it@gmail.com** — Login with this email to access Admin Panel. All other users go to User Panel (homepage).
+**shubhboda@gmail.com** — Login with this email to access Admin Panel. All other users go to User Panel (homepage).
 
 ---
 
@@ -22,7 +22,7 @@ VITE_SUPABASE_ANON_KEY=your_actual_anon_key
 2. Name: `project-images`, Public: **Yes**
 3. **Policies** → New policy:
    - **SELECT**: Public (allows read)
-   - **INSERT**: `auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'`
+   - **INSERT**: `auth.jwt() ->> 'email' = 'shubhboda@gmail.com'`
    - **DELETE**: Same as INSERT
 
 ### Realtime (optional – live message updates)

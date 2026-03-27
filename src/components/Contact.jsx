@@ -140,7 +140,7 @@ export default function Contact() {
                 <Mail className="w-5 h-5 text-cyan-400" />
                 <span className="text-white font-medium">Email</span>
               </div>
-              <a href="mailto:support.forcor.it@gmail.com" className="text-gray-400 hover:text-cyan-400 transition-colors">support.forcor.it@gmail.com</a>
+              <a href="mailto:shubhboda@gmail.com" className="text-gray-400 hover:text-cyan-400 transition-colors">shubhboda@gmail.com</a>
             </div>
             <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 transition-colors">
               <div className="flex items-center gap-3 mb-4">

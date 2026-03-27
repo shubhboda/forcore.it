@@ -24,7 +24,7 @@ CREATE POLICY "Allow public insert contacts" ON contacts FOR INSERT WITH CHECK (
 
 DROP POLICY IF EXISTS "Admin read contacts" ON contacts;
 CREATE POLICY "Admin read contacts" ON contacts FOR SELECT USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 2. PROJECTS (Our Work section)
@@ -46,17 +46,17 @@ CREATE POLICY "Public read projects" ON projects FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Admin insert projects" ON projects;
 CREATE POLICY "Admin insert projects" ON projects FOR INSERT WITH CHECK (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 DROP POLICY IF EXISTS "Admin update projects" ON projects;
 CREATE POLICY "Admin update projects" ON projects FOR UPDATE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 DROP POLICY IF EXISTS "Admin delete projects" ON projects;
 CREATE POLICY "Admin delete projects" ON projects FOR DELETE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 3. PLANS (Pricing section)
@@ -80,17 +80,17 @@ CREATE POLICY "Public read plans" ON plans FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Admin insert plans" ON plans;
 CREATE POLICY "Admin insert plans" ON plans FOR INSERT WITH CHECK (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 DROP POLICY IF EXISTS "Admin update plans" ON plans;
 CREATE POLICY "Admin update plans" ON plans FOR UPDATE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 DROP POLICY IF EXISTS "Admin delete plans" ON plans;
 CREATE POLICY "Admin delete plans" ON plans FOR DELETE USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- 4. USER PROFILES
@@ -115,7 +115,7 @@ CREATE POLICY "Users update own profile" ON user_profiles FOR UPDATE USING (auth
 
 DROP POLICY IF EXISTS "Admin read all profiles" ON user_profiles;
 CREATE POLICY "Admin read all profiles" ON user_profiles FOR SELECT USING (
-  auth.jwt() ->> 'email' = 'support.forcor.it@gmail.com'
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
 );
 
 -- Allow trigger & users to insert own profile
@@ -129,7 +129,7 @@ CREATE POLICY "Allow insert own profile" ON user_profiles FOR INSERT WITH CHECK 
 -- BEGIN
 --   INSERT INTO user_profiles (id, email, full_name, avatar_url, role)
 --   VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'avatar_url',
---     CASE WHEN NEW.email = 'support.forcor.it@gmail.com' THEN 'admin' ELSE 'user' END)
+--     CASE WHEN NEW.email = 'shubhboda@gmail.com' THEN 'admin' ELSE 'user' END)
 --   ON CONFLICT (id) DO NOTHING;
 --   RETURN NEW;
 -- END;

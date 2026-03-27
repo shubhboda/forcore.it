@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Users, Briefcase, CreditCard, MessageCircle, ArrowRight } from "lucide-react";
 import { supabase } from "../../lib/supabase";
@@ -12,44 +12,86 @@ export default function Dashboard() {
   });
   const [recentContacts, setRecentContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
+  const fetchStats = useCallback(async (cancelledRef) => {
     if (!supabase) {
       setLoading(false);
       return;
     }
 
-    async function fetchStats() {
-      try {
-        const [usersRes, projectsRes, plansRes, contactsRes] = await Promise.all([
+    try {
+      setLoading(true);
+      setError("");
+
+      // Supabase free projects can be slow/cold-start; keep this generous.
+      const timeoutMs = 30000;
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Dashboard request timed out (30s)")), timeoutMs)
+      );
+
+      const load = async () => {
+        const results = await Promise.allSettled([
           supabase.from("user_profiles").select("id", { count: "exact", head: true }),
           supabase.from("projects").select("id", { count: "exact", head: true }),
           supabase.from("plans").select("id", { count: "exact", head: true }),
           supabase.from("contacts").select("id", { count: "exact", head: true }),
         ]);
 
-        setStats({
-          users: usersRes.count ?? 0,
-          projects: projectsRes.count ?? 0,
-          plans: plansRes.count ?? 0,
-          contacts: contactsRes.count ?? 0,
-        });
+        const toValue = (r) => (r.status === "fulfilled" ? r.value : null);
+        const usersRes = toValue(results[0]);
+        const projectsRes = toValue(results[1]);
+        const plansRes = toValue(results[2]);
+        const contactsRes = toValue(results[3]);
 
-        const { data: contacts } = await supabase
+        const firstError =
+          usersRes?.error ||
+          projectsRes?.error ||
+          plansRes?.error ||
+          contactsRes?.error ||
+          (results.find((r) => r.status === "rejected")?.reason ?? null);
+
+        if (firstError) throw firstError;
+
+        if (!cancelledRef.current) {
+          setStats({
+            users: usersRes?.count ?? 0,
+            projects: projectsRes?.count ?? 0,
+            plans: plansRes?.count ?? 0,
+            contacts: contactsRes?.count ?? 0,
+          });
+        }
+
+        const { data: contacts, error: contactsErr } = await supabase
           .from("contacts")
           .select("name, email, created_at")
           .order("created_at", { ascending: false })
           .limit(5);
-        setRecentContacts(contacts ?? []);
-      } catch (err) {
-        console.error("Dashboard stats error:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
 
-    fetchStats();
+        if (contactsErr) throw contactsErr;
+        if (!cancelledRef.current) setRecentContacts(contacts ?? []);
+      };
+
+      await Promise.race([load(), timeout]);
+    } catch (err) {
+      console.error("Dashboard stats error:", err);
+      const msg =
+        err?.message ||
+        (typeof err === "string" ? err : "") ||
+        "Failed to load dashboard data.";
+      if (!cancelledRef.current) setError(msg);
+    } finally {
+      if (!cancelledRef.current) setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    const cancelledRef = { current: false };
+    fetchStats(cancelledRef);
+    return () => {
+      cancelledRef.current = true;
+    };
+  }, [fetchStats]);
 
   const cards = [
     { label: "Total Users", value: stats.users, icon: Users },
@@ -72,6 +114,23 @@ export default function Dashboard() {
         <h2 className="text-2xl font-bold text-white mb-1">Dashboard</h2>
         <p className="text-gray-400">Overview of your forcore.it site</p>
       </div>
+
+      {error && (
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          {error}
+          <div className="mt-2 text-xs text-gray-400">
+            This is usually a Supabase RLS/policy issue. Re-run the latest admin-policy SQL for
+            <span className="text-gray-300"> shubhboda@gmail.com</span>.
+          </div>
+          <button
+            type="button"
+            onClick={() => fetchStats({ current: false })}
+            className="mt-3 inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-200 hover:border-cyan-400/30 hover:text-white text-xs"
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => (
