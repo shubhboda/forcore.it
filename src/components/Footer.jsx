@@ -1,4 +1,4 @@
-import { Linkedin, Instagram } from "lucide-react";
+import { Linkedin, Instagram, MessageCircle } from "lucide-react";
 import LogoIcon from "./LogoIcon";
 import { motion } from "framer-motion";
 
@@ -10,8 +10,9 @@ const quickLinks = [
 ];
 
 const socialLinks = [
-  { href: "#", icon: Linkedin },
+  { href: "https://www.linkedin.com", icon: Linkedin },
   { href: "https://www.instagram.com/forcore.it/?hl=en", icon: Instagram },
+  { href: "https://wa.me/916354823011", icon: MessageCircle },
 ];
 
 export default function Footer() {

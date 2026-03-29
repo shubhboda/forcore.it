@@ -1,169 +1,225 @@
-import { useState } from "react";
-import { ExternalLink, X, Linkedin, Mail } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { ExternalLink, ChevronLeft, ChevronRight, Globe, Linkedin, Mail } from "lucide-react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { teamMembers } from "../data/team";
 
 export default function Team() {
-  const [selectedMember, setSelectedMember] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { amount: 0.3 });
+
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.9
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.9
+    })
+  };
+
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % teamMembers.length);
+  };
+
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
+  };
+
+  useEffect(() => {
+    if (!isInView) return; // Only slide when section is in view
+
+    // CEO (Shubh Boda) slide duration: 7s (for initial pause), Others: 5s
+    const currentMember = teamMembers[currentIndex];
+    const duration = currentMember.role === "CEO & Founder" ? 7000 : 5000;
+    
+    const timer = setInterval(nextSlide, duration);
+    return () => clearInterval(timer);
+  }, [currentIndex, isInView]);
+
+  const member = teamMembers[currentIndex];
 
   return (
-    <section id="team" className="py-24 px-6 bg-[#0a0a0f]">
-      <div className="max-w-7xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white mb-4">
-            Meet the Team
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Student founders building world-class software from India.
-          </p>
-        </motion.div>
+    <section id="team" ref={sectionRef} className="relative min-h-screen bg-[#0a0a0f] flex items-center justify-center overflow-hidden py-20 px-6">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto w-full relative z-10">
+        <div className="text-center mb-12">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="font-[family-name:var(--font-syne)] text-3xl md:text-5xl font-bold text-white mb-2"
+          >
+            The Minds Behind <span className="text-cyan-400">forcore.it</span>
+          </motion.h2>
+          <p className="text-gray-500 uppercase tracking-[0.2em] text-sm font-medium">Meet Our Leadership Team</p>
+        </div>
 
-        {(() => {
-          const renderCard = (member, index) => (
+        <div className="relative min-h-[700px] md:min-h-[550px] lg:h-[550px] w-full flex items-center">
+          <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
-              key={member.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 cursor-pointer transition-all hover:-translate-y-2 hover:bg-white/[0.04]"
-              onClick={() => setSelectedMember(member)}
+              key={currentIndex}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 100, damping: 25 },
+                opacity: { duration: 0.8 },
+                scale: { duration: 0.8 }
+              }}
+              className="absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-8"
             >
-              <div className="flex flex-col items-center text-center">
-                <div className="relative mb-4 overflow-hidden rounded-full">
-                  {member.photoFallback === null ? (
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                      <span className="text-2xl font-bold text-cyan-400">{member.name.split(' ').map(n => n[0]).join('')}</span>
-                    </div>
-                  ) : (
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      className="w-24 h-24 rounded-full object-cover border-2 border-white/10 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-500"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = member.photoFallback || "";
-                      }}
-                    />
-                  )}
+              {/* Image Side */}
+              <div className="flex justify-center lg:justify-end order-1 lg:order-1">
+                <div className="relative group">
+                  <div className="absolute -inset-4 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-cyan-500/30 transition-colors duration-500" />
+                  <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl">
+                    {member.photoFallback === null ? (
+                      <div className="w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
+                        <span className="text-6xl font-bold text-cyan-400">{member.name.split(' ').map(n => n[0]).join('')}</span>
+                      </div>
+                    ) : (
+                      <img
+                        src={member.photo}
+                        alt={member.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        style={{ objectPosition: member.imagePosition || "center" }}
+                        crossOrigin="anonymous"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = member.photoFallback || "";
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
-                <h3 className="font-[family-name:var(--font-syne)] text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">{member.name}</h3>
-                <p className="text-cyan-400 text-sm mb-3">{member.role}</p>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{member.bio}</p>
-                <div className="flex flex-wrap gap-2 justify-center mb-4">
+              </div>
+
+              {/* Content Side */}
+              <div className="text-center lg:text-left order-2 lg:order-2 space-y-6">
+                <div>
+                  <motion.span 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold tracking-wider uppercase mb-4"
+                  >
+                    {member.role}
+                  </motion.span>
+                  <motion.h3 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="font-[family-name:var(--font-syne)] text-4xl md:text-6xl font-bold text-white mb-4"
+                  >
+                    {member.name}
+                  </motion.h3>
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-gray-400 text-lg md:text-xl leading-relaxed max-w-xl mx-auto lg:mx-0"
+                  >
+                    {member.bio}
+                  </motion.p>
+                </div>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex flex-wrap gap-3 justify-center lg:justify-start"
+                >
                   {member.skills.map((skill) => (
-                    <span key={skill} className="px-2 py-0.5 rounded-full text-xs bg-white/5 text-gray-400 border border-white/10 group-hover:border-cyan-400/20 transition-colors">
+                    <span key={skill} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 text-sm">
                       {skill}
                     </span>
                   ))}
-                </div>
-                {member.stats && <p className="text-xs text-gray-500 mb-4">{member.stats}</p>}
-                {member.portfolio && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(member.portfolio, "_blank");
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 text-sm hover:bg-cyan-500 hover:text-black transition-colors"
-                  >
-                    View Portfolio
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                )}
+                </motion.div>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="flex flex-wrap gap-6 justify-center lg:justify-start pt-4"
+                >
+                  {member.portfolio && (
+                    <a
+                      href={member.portfolio}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] active:scale-95"
+                    >
+                      View Portfolio
+                      <ExternalLink className="w-5 h-5" />
+                    </a>
+                  )}
+                  <div className="flex items-center gap-4">
+                    {member.linkedin && member.linkedin !== "#" && (
+                      <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 transition-all">
+                        <Linkedin className="w-6 h-6" />
+                      </a>
+                    )}
+                    {member.email && (
+                      <a href={`mailto:${member.email}`} className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 transition-all">
+                        <Mail className="w-6 h-6" />
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
-          );
-
-          return (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                {teamMembers.slice(0, 2).map((member, index) => renderCard(member, index))}
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamMembers.slice(2).map((member, index) => renderCard(member, index + 2))}
-              </div>
-            </>
-          );
-        })()}
-      </div>
-
-      <AnimatePresence>
-      {selectedMember && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90"
-          onClick={() => setSelectedMember(null)}
-        >
-          <div
-            className="relative max-w-lg w-full rounded-2xl bg-[#0d0d1a] border border-white/10 p-8"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setSelectedMember(null)}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="flex flex-col items-center text-center">
-              {selectedMember.photoFallback === null ? (
-                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/30 flex items-center justify-center mb-4">
-                  <span className="text-3xl font-bold text-cyan-400">{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
-                </div>
-              ) : (
-                <img
-                  src={selectedMember.photo}
-                  alt={selectedMember.name}
-                  className="w-28 h-28 rounded-full object-cover border-2 border-cyan-400/30 mb-4"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = selectedMember.photoFallback || "";
-                  }}
-                />
-              )}
-              <h3 className="font-[family-name:var(--font-syne)] text-2xl font-bold text-white">{selectedMember.name}</h3>
-              <p className="text-cyan-400 mb-4">{selectedMember.role}</p>
-              <p className="text-gray-400 text-sm mb-6">{selectedMember.bio}</p>
-              <div className="flex flex-wrap gap-2 justify-center mb-6">
-                {selectedMember.skills.map((skill) => (
-                  <span key={skill} className="px-3 py-1 rounded-full text-sm bg-white/5 text-gray-400">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-              <div className="flex gap-4">
-                {selectedMember.portfolio && (
-                  <a
-                    href={selectedMember.portfolio}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500 text-black font-medium hover:bg-cyan-400"
-                  >
-                    Open Full CV
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-                {selectedMember.linkedin && selectedMember.linkedin !== "#" && (
-                  <a href={selectedMember.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-cyan-400">
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                )}
-
-                {selectedMember.email && (
-                  <a href={`mailto:${selectedMember.email}`} className="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-cyan-400">
-                    <Mail className="w-5 h-5" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
+          </AnimatePresence>
         </div>
-      )}
-      </AnimatePresence>
+
+        {/* Navigation Controls */}
+        <div className="flex justify-center items-center gap-8 mt-16 md:mt-24">
+          <button
+            onClick={prevSlide}
+            className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/5 transition-all"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          
+          <div className="flex gap-3">
+            {teamMembers.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setDirection(idx > currentIndex ? 1 : -1);
+                  setCurrentIndex(idx);
+                }}
+                className={`h-2 transition-all duration-300 rounded-full ${
+                  idx === currentIndex ? "w-8 bg-cyan-400" : "w-2 bg-white/20"
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={nextSlide}
+            className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/5 transition-all"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

@@ -3,7 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import LogoIcon from "../components/LogoIcon";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
+import {
+  formatAuthError,
+  supabaseAuthProvidersDashboardUrl,
+} from "../lib/formatAuthError";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -49,13 +53,18 @@ export default function Login() {
       const { error: err } = await signInWithGoogle();
       if (err) throw err;
     } catch (err) {
-      setError(err.message || "Google login failed");
+      setError(formatAuthError(err));
     } finally {
       setSubmitting(false);
     }
   };
 
   const showSetupBox = !isSupabaseConfigured || error?.includes("Supabase not configured");
+  const googleProviderHint =
+    error?.includes("Google login is turned off") ||
+    error?.includes("provider is not enabled") ||
+    error?.includes("Client secret is missing") ||
+    error?.includes("incomplete");
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-6">
@@ -76,7 +85,7 @@ export default function Login() {
           <p className="text-gray-400 text-sm mb-6">Sign in to your account</p>
 
           <AnimatePresence mode="wait">
-            {(showSetupBox || (error && !error.includes("Supabase"))) && (
+            {(showSetupBox || error) && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
@@ -92,7 +101,35 @@ export default function Login() {
                 {error?.includes("Email not confirmed") && (
                   <div className="mt-3 pt-3 border-t border-red-500/20 text-xs text-gray-400">
                     <p>Check your inbox for the verification link.</p>
-                    <p className="mt-1">Or <a href="https://supabase.com/dashboard/project/gtcxacyuinnuonjjxhwh/auth/providers" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">disable Confirm email</a> in Supabase (Email provider).</p>
+                    <p className="mt-1">
+                      Or{" "}
+                      <a
+                        href={supabaseAuthProvidersDashboardUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-400 hover:underline"
+                      >
+                        open Auth providers
+                      </a>{" "}
+                      and adjust the Email provider (e.g. Confirm email).
+                    </p>
+                  </div>
+                )}
+                {googleProviderHint && !showSetupBox && (
+                  <div className="mt-3 pt-3 border-t border-red-500/20 text-xs text-gray-400">
+                    <a
+                      href={supabaseAuthProvidersDashboardUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:underline font-medium"
+                    >
+                      Open Supabase → Authentication → Providers → Google
+                    </a>
+                    <p className="mt-2">
+                      Enable Google, then add the OAuth Client ID and Client secret from Google Cloud
+                      Console. In Google Cloud, set the redirect URI to your Supabase callback (shown on
+                      that same Supabase page).
+                    </p>
                   </div>
                 )}
                 {showSetupBox && (

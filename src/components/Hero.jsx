@@ -1,4 +1,3 @@
-import { ArrowRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Hero() {
@@ -45,23 +44,6 @@ export default function Hero() {
           From simple websites to full AI-powered systems — we deliver modern tech
           solutions for businesses worldwide.
         </motion.p>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <motion.a
-            whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(34, 211, 238, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            href="#contact"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-cyan-500 text-black font-semibold rounded-lg transition-all"
-          >
-            Start a Project
-            <ArrowRight className="w-4 h-4" />
-          </motion.a>
-        </motion.div>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none" />

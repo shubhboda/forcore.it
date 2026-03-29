@@ -6,7 +6,7 @@ const BUCKET = "project-images";
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
@@ -18,10 +18,8 @@ export default function AdminProjects() {
   }, []);
 
   async function fetchProjects() {
-    setLoading(true);
     if (!supabase) {
       setProjects([]);
-      setLoading(false);
       return;
     }
     const { data, error } = await supabase

@@ -4,25 +4,35 @@ import { supabase } from "../../lib/supabase";
 
 export default function AdminMessages() {
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState("");
 
   async function fetchMessages() {
-    setLoading(true);
     setError("");
     try {
       if (!supabase) {
         setMessages([]);
         return;
       }
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log("AdminMessages: Session active:", !!session);
+
       const { data, error: err } = await supabase
         .from("contacts")
         .select("*")
         .order("created_at", { ascending: false });
-      if (err) throw err;
+
+      console.log("AdminMessages: Fetched data count:", data?.length || 0);
+
+      if (err) {
+        console.error("AdminMessages: Fetch error details:", err);
+        throw err;
+      }
       setMessages(data ?? []);
     } catch (e) {
+      console.error("AdminMessages: Error caught:", e);
       setError(e?.message || "Failed to load messages.");
     } finally {
       setLoading(false);
@@ -30,15 +40,25 @@ export default function AdminMessages() {
   }
 
   useEffect(() => {
+    // Initial fetch
     fetchMessages();
 
     if (!supabase) return;
+
+    // Real-time subscription for contacts
     const channel = supabase
-      .channel("contacts-changes")
-      .on("postgres_changes", { event: "*", schema: "public", table: "contacts" }, () => {
-        fetchMessages();
-      })
-      .subscribe();
+      .channel("contacts-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "contacts" },
+        (payload) => {
+          console.log("Real-time update received for contacts:", payload);
+          fetchMessages(); // Refresh list on any change
+        }
+      )
+      .subscribe((status) => {
+        console.log("Contacts subscription status:", status);
+      });
 
     return () => {
       supabase.removeChannel(channel);

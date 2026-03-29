@@ -4,6 +4,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminMessages from "./pages/admin/AdminMessages";
+import AdminBookings from "./pages/admin/AdminBookings";
 import AdminProjects from "./pages/admin/AdminProjects";
 import AdminPlans from "./pages/admin/AdminPlans";
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -31,6 +32,7 @@ function App() {
       >
         <Route index element={<Dashboard />} />
         <Route path="messages" element={<AdminMessages />} />
+        <Route path="bookings" element={<AdminBookings />} />
         <Route path="projects" element={<AdminProjects />} />
         <Route path="plans" element={<AdminPlans />} />
         <Route path="users" element={<AdminUsers />} />

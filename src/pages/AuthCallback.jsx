@@ -1,46 +1,106 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { ADMIN_EMAIL } from "../constants/auth";
 
+function readOAuthErrorFromUrl() {
+  try {
+    const u = new URL(window.location.href);
+    const fromSearch =
+      u.searchParams.get("error_description") || u.searchParams.get("error");
+    if (fromSearch) {
+      return decodeURIComponent(fromSearch.replace(/\+/g, " "));
+    }
+    if (u.hash?.length > 1) {
+      const hp = new URLSearchParams(u.hash.slice(1));
+      const fromHash = hp.get("error_description") || hp.get("error");
+      if (fromHash) return decodeURIComponent(fromHash.replace(/\+/g, " "));
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 export default function AuthCallback() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("Completing sign in...");
+  const didNavigate = useRef(false);
 
   const hasSupabase = useMemo(() => !!supabase, []);
 
   useEffect(() => {
     let cancelled = false;
 
+    if (!supabase) {
+      setMessage("Supabase not configured.");
+      return undefined;
+    }
+
+    const go = (session) => {
+      if (cancelled || didNavigate.current || !session?.user) return;
+      const email = (session.user.email || "").toLowerCase();
+      if (!email) return;
+      didNavigate.current = true;
+      navigate(email === ADMIN_EMAIL.toLowerCase() ? "/admin" : "/", { replace: true });
+    };
+
     async function finish() {
-      if (!supabase) {
-        setMessage("Supabase not configured.");
+      const urlError = readOAuthErrorFromUrl();
+      if (urlError) {
+        setMessage(urlError);
+        setTimeout(() => {
+          if (cancelled || didNavigate.current) return;
+          navigate("/login", { replace: true });
+        }, 2000);
         return;
       }
 
       try {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
-
-        const email = (data?.session?.user?.email || "").toLowerCase();
-        if (!email) {
+        go(data?.session ?? null);
+        if (!cancelled && !didNavigate.current && !data?.session) {
           setMessage("No session found. Please try signing in again.");
-          setTimeout(() => navigate("/login", { replace: true }), 600);
-          return;
+          setTimeout(() => {
+            if (cancelled || didNavigate.current) return;
+            navigate("/login", { replace: true });
+          }, 1200);
         }
-
-        if (cancelled) return;
-        navigate(email === ADMIN_EMAIL.toLowerCase() ? "/admin" : "/", { replace: true });
       } catch (e) {
         if (cancelled) return;
         setMessage(e?.message || "Sign in failed. Please try again.");
-        setTimeout(() => navigate("/login", { replace: true }), 800);
+        setTimeout(() => {
+          if (cancelled || didNavigate.current) return;
+          navigate("/login", { replace: true });
+        }, 1500);
       }
     }
 
-    finish();
+    const { data: subData } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        go(session);
+      }
+    });
+
+    void finish();
+
+    const failSafe = setTimeout(() => {
+      if (cancelled || didNavigate.current) return;
+      void supabase.auth.getSession().then(({ data }) => {
+        if (cancelled || didNavigate.current) return;
+        if (data?.session) go(data.session);
+        else {
+          setMessage("Sign in timed out. Try again.");
+          navigate("/login", { replace: true });
+        }
+      });
+    }, 15000);
+
     return () => {
       cancelled = true;
+      clearTimeout(failSafe);
+      subData?.subscription?.unsubscribe?.();
     };
   }, [navigate]);
 

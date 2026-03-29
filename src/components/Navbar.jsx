@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, LogIn, UserPlus } from "lucide-react";
 import LogoIcon from "./LogoIcon";
-import { motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../hooks/useAuth";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -64,6 +64,7 @@ export default function Navbar() {
                 </Link>
               )}
               <button
+                type="button"
                 onClick={handleSignOut}
                 className="px-4 py-2 text-sm text-gray-400 hover:text-white"
               >
@@ -103,63 +104,76 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-[#0a0a0f] border-t border-white/5 px-6 py-4 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-gray-300 hover:text-cyan-400 py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          {user ? (
-            <>
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10 text-center"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-[#0d0d1a] border-b border-white/5 overflow-hidden"
+          >
+            <div className="px-6 py-8 space-y-6 flex flex-col items-center text-center">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-lg font-medium text-gray-300 hover:text-cyan-400 w-full py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Admin Panel
-                </Link>
-              )}
-              <button
-                onClick={handleSignOut}
-                className="px-4 py-2 text-gray-400 text-left w-full"
-              >
-                Sign Out
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="flex items-center gap-2 py-2 text-gray-300 hover:text-cyan-400"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <LogIn className="w-4 h-4" /> Login
-              </Link>
-              <Link
-                to="/signup"
-                className="flex items-center gap-2 py-2 text-gray-300 hover:text-cyan-400"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <UserPlus className="w-4 h-4" /> Sign Up
-              </Link>
-            </>
-          )}
-          <a
-            href="#contact"
-            className="px-4 py-2 text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-lg hover:bg-cyan-400/10 text-center mt-2"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Get a Free Quote
-          </a>
-        </div>
-      )}
+                  {link.label}
+                </a>
+              ))}
+              <div className="pt-6 w-full flex flex-col gap-4">
+                {user ? (
+                  <>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="w-full px-6 py-3 text-center font-bold text-cyan-400 border border-cyan-400/50 rounded-xl bg-cyan-400/5"
+                      >
+                        Go to Dashboard
+                      </Link>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleSignOut}
+                      className="w-full px-6 py-3 text-center font-medium text-gray-400 hover:text-white"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-full px-6 py-3 text-center font-medium text-gray-300 hover:text-cyan-400"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-full px-6 py-3 text-center font-bold text-cyan-400 border border-cyan-400/50 rounded-xl bg-cyan-400/5 shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
+                <a
+                  href="#contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full px-6 py-4 text-center font-bold bg-cyan-500 text-black rounded-xl hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+                >
+                  Book a Strategy Call
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

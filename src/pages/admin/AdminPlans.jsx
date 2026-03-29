@@ -4,7 +4,7 @@ import { supabase } from "../../lib/supabase";
 
 export default function AdminPlans() {
   const [plans, setPlans] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({
     name: "",
@@ -21,10 +21,8 @@ export default function AdminPlans() {
   }, []);
 
   async function fetchPlans() {
-    setLoading(true);
     if (!supabase) {
       setPlans([]);
-      setLoading(false);
       return;
     }
     const { data, error } = await supabase

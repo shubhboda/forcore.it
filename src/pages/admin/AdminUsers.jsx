@@ -3,19 +3,17 @@ import { supabase } from "../../lib/supabase";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!supabase) {
-      setLoading(false);
       return;
     }
     fetchUsers();
   }, []);
 
   async function fetchUsers() {
-    setLoading(true);
     setError("");
     try {
       if (!supabase) {

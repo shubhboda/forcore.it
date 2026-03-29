@@ -11,17 +11,15 @@ export default function Dashboard() {
     contacts: 0,
   });
   const [recentContacts, setRecentContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const fetchStats = useCallback(async (cancelledRef) => {
     if (!supabase) {
-      setLoading(false);
       return;
     }
 
     try {
-      setLoading(true);
       setError("");
 
       // Supabase free projects can be slow/cold-start; keep this generous.
@@ -31,6 +29,7 @@ export default function Dashboard() {
       );
 
       const load = async () => {
+        console.log("Dashboard: Starting stats load...");
         const results = await Promise.allSettled([
           supabase.from("user_profiles").select("id", { count: "exact", head: true }),
           supabase.from("projects").select("id", { count: "exact", head: true }),
@@ -38,20 +37,18 @@ export default function Dashboard() {
           supabase.from("contacts").select("id", { count: "exact", head: true }),
         ]);
 
+        console.log("Dashboard: Raw results from allSettled:", results);
+
         const toValue = (r) => (r.status === "fulfilled" ? r.value : null);
         const usersRes = toValue(results[0]);
         const projectsRes = toValue(results[1]);
         const plansRes = toValue(results[2]);
         const contactsRes = toValue(results[3]);
 
-        const firstError =
-          usersRes?.error ||
-          projectsRes?.error ||
-          plansRes?.error ||
-          contactsRes?.error ||
-          (results.find((r) => r.status === "rejected")?.reason ?? null);
-
-        if (firstError) throw firstError;
+        if (usersRes?.error) console.warn("Dashboard: user_profiles fetch error:", usersRes.error);
+        if (projectsRes?.error) console.warn("Dashboard: projects fetch error:", projectsRes.error);
+        if (plansRes?.error) console.warn("Dashboard: plans fetch error:", plansRes.error);
+        if (contactsRes?.error) console.warn("Dashboard: contacts fetch error:", contactsRes.error);
 
         if (!cancelledRef.current) {
           setStats({
@@ -68,8 +65,14 @@ export default function Dashboard() {
           .order("created_at", { ascending: false })
           .limit(5);
 
-        if (contactsErr) throw contactsErr;
-        if (!cancelledRef.current) setRecentContacts(contacts ?? []);
+        if (contactsErr) {
+          console.error("Dashboard: contacts fetch error (recent):", contactsErr);
+          throw contactsErr;
+        }
+        if (!cancelledRef.current) {
+          console.log("Dashboard: Recent contacts fetched:", contacts?.length || 0);
+          setRecentContacts(contacts ?? []);
+        }
       };
 
       await Promise.race([load(), timeout]);

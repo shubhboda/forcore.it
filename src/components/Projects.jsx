@@ -5,16 +5,27 @@ import { supabase } from "../lib/supabase";
 import { projects as fallbackProjects } from "../data/projects";
 
 export default function Projects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(fallbackProjects);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!supabase) {
+      return;
+    }
+
     async function fetchProjects() {
-      if (supabase) {
-        const { data, error } = await supabase
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout")), 5000)
+      );
+
+      try {
+        const fetchPromise = supabase
           .from("projects")
           .select("*")
           .order("sort_order", { ascending: true });
+
+        const { data, error } = await Promise.race([fetchPromise, timeout]);
+        
         if (!error && data?.length) {
           setProjects(data.map((p) => ({
             id: p.id,
@@ -23,13 +34,12 @@ export default function Projects() {
             tags: p.tags ?? [],
             image: p.image_url,
           })));
-        } else {
-          setProjects(fallbackProjects);
         }
-      } else {
-        setProjects(fallbackProjects);
+      } catch (err) {
+        console.error("Failed to fetch projects or timed out:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchProjects();
   }, []);
@@ -46,7 +56,7 @@ export default function Projects() {
           </p>
         </div>
 
-        {loading ? (
+        {loading && projects.length === 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {[1, 2, 3].map((i) => (
               <div key={i} className="rounded-2xl bg-white/[0.02] border border-white/5 aspect-video animate-pulse" />

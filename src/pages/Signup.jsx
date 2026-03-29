@@ -3,7 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import LogoIcon from "../components/LogoIcon";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
+import {
+  formatAuthError,
+  supabaseAuthProvidersDashboardUrl,
+} from "../lib/formatAuthError";
 
 export default function Signup() {
   const [fullName, setFullName] = useState("");
@@ -49,13 +53,18 @@ export default function Signup() {
       const { error: err } = await signInWithGoogle();
       if (err) throw err;
     } catch (err) {
-      setError(err.message || "Google signup failed");
+      setError(formatAuthError(err));
     } finally {
       setSubmitting(false);
     }
   };
 
   const showSetupBox = !isSupabaseConfigured || error?.includes("Supabase not configured");
+  const googleProviderHint =
+    error?.includes("Google login is turned off") ||
+    error?.includes("provider is not enabled") ||
+    error?.includes("Client secret is missing") ||
+    error?.includes("incomplete");
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-6">
@@ -76,7 +85,7 @@ export default function Signup() {
           <p className="text-gray-400 text-sm mb-6">Join forcore.it to get started</p>
 
           <AnimatePresence mode="wait">
-            {(showSetupBox || (error && !error.includes("Supabase"))) && (
+            {(showSetupBox || error) && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
@@ -89,6 +98,21 @@ export default function Signup() {
                 }`}
               >
                 {showSetupBox ? "Supabase not configured" : error}
+                {googleProviderHint && !showSetupBox && (
+                  <div className="mt-3 pt-3 border-t border-red-500/20 text-xs text-gray-400">
+                    <a
+                      href={supabaseAuthProvidersDashboardUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:underline font-medium"
+                    >
+                      Open Supabase → Authentication → Providers → Google
+                    </a>
+                    <p className="mt-2">
+                      Enable Google and add Client ID + Client secret from Google Cloud Console.
+                    </p>
+                  </div>
+                )}
               {error?.includes("Database error") && (
                 <div className="mt-3 pt-3 border-t border-red-500/20 space-y-2">
                   <p className="text-xs text-white font-medium">Fix: Supabase Dashboard → SQL Editor → paste & run:</p>
