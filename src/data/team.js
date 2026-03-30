@@ -49,14 +49,38 @@ export const teamMembers = [
     role: "Manager",
     photo: "/images/team/nishil-photo.jpeg",
     coverImage: "/images/team/nishil-photo.jpeg",
+    imagePosition: "center 15%", // shift face up/down for better cropping
+=======
+>>>>>>> 3fb294c9a53b5b7df81e91473423d89d7a5d8bfd
+    bio: "AI specialist building intelligent systems, automation pipelines, and smart integrations that make software think.",
+
+=======
     photoFallback: "/images/team/nishil-photo.jpeg",
     imagePosition: "center 15%", // shift face up/down for better cropping
+    bio: "AI specialist building intelligent systems, automation pipelines, and smart integrations that make software think.",
+
+=======
+    imagePosition: "center 15%", // shift face up/down for better cropping
+=======
+>>>>>>> 3fb294c9a53b5b7df81e91473423d89d7a5d8bfd
     bio: "AI specialist building intelligent systems, automation pipelines, and smart integrations that make software think.",
     skills: ["Machine Learning", "Python", "LLMs", "AI Integration", "Automation"],
     portfolio: "https://nishil-cv.vercel.app/",
     linkedin: "#",
     github: "#",
   },
+    name: "Keyur Nakum",
+    role: "Team Lead",
+    photo: "/images/team/keyur-nakum.jpeg",
+    coverImage: "/images/team/keyur-nakum.jpeg",
+    photoFallback: "/images/team/keyur-nakum.jpeg",
+=======
+    photo: "/images/team/keyur-lead.jpeg",
+    coverImage: "/images/team/keyur-lead.jpeg",
+    photoFallback: "https://keyur-cv.vercel.app/assets/Keyur.jpg",
+    imagePosition: "center 20%", // Adjusts face down for Team Lead
+
+=======
   {
     id: 4,
     name: "Keyur Nakum",
@@ -64,6 +88,21 @@ export const teamMembers = [
     photo: "/images/team/keyur-nakum.jpeg",
     coverImage: "/images/team/keyur-nakum.jpeg",
     photoFallback: "/images/team/keyur-nakum.jpeg",
+    photo: "/images/team/keyur-lead.jpeg",
+    coverImage: "/images/team/keyur-lead.jpeg",
+    photoFallback: "https://keyur-cv.vercel.app/assets/Keyur.jpg",
+    imagePosition: "center 20%", // Adjusts face down for Team Lead
+
+=======
+    name: "Keyur Nakum",
+    role: "Team Lead",
+    photo: "/images/team/keyur-nakum.jpeg",
+    coverImage: "/images/team/keyur-nakum.jpeg",
+    photoFallback: "/images/team/keyur-nakum.jpeg",
+=======
+    photo: "/images/team/keyur-lead.jpeg",
+    coverImage: "/images/team/keyur-lead.jpeg",
+    photoFallback: "https://keyur-cv.vercel.app/assets/Keyur.jpg",
     imagePosition: "center 20%", // Adjusts face down for Team Lead
     bio: "Designer obsessed with beautiful, intuitive interfaces. Brings every product to life with pixel-perfect UI and UX.",
     skills: ["UI/UX Design", "Figma", "Frontend Dev", "AI-Integrated UI"],
