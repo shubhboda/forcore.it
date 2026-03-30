@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --font-syne: "Syne", system-ui, sans-serif;
+  --font-inter: "Inter", "DM Sans", system-ui, sans-serif;
+  --color-space: #0a0a0f;
+  --color-space-light: #0d0d1a;
+  --color-cyan: #00d4ff;
+  --color-blue: #0066ff;
+  --color-cyan-glow: rgba(0, 212, 255, 0.4);
+  --color-blue-glow: rgba(0, 102, 255, 0.3);
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    background-color: #0a0a0f;
+  }
+
+  body {
+    background-color: #0a0a0f;
+    color: rgb(229 231 235);
+    font-family: var(--font-inter);
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+  }
+
+  #root {
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #0a0a0f;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-syne);
+    font-weight: bold;
+    color: white;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00d4ff33;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00d4ff66;
+}
+
+/* Gradient animation for Hero text */
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 4s ease infinite;
+}
+
+/* Marquee Ticker Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
