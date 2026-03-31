@@ -38,6 +38,7 @@
     padding: 0;
   }
 
+
   #root {
     min-height: 100vh;
     height: 100%;
@@ -98,3 +99,5 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+

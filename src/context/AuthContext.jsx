@@ -1,7 +1,21 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { ADMIN_EMAIL } from "../constants/auth";
 import { AuthContext } from "./auth-context";
+
+function buildProfilePayload(sessionUser) {
+  const email = (sessionUser?.email || "").trim();
+  return {
+    id: sessionUser.id,
+    email,
+    full_name:
+      sessionUser.user_metadata?.full_name || email.split("@")[0] || "User",
+    avatar_url: sessionUser.user_metadata?.avatar_url || "",
+    role: email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? "admin" : "user",
+    last_login_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -9,6 +23,115 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
 
   const isAdmin = (user?.email || "").toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+  const syncProfileRecord = useCallback(async (sessionUser, options = {}) => {
+    if (!supabase || !sessionUser?.id) {
+      return { data: null, error: null };
+    }
+
+    const { touchLastLogin = false } = options;
+    const payload = buildProfilePayload(sessionUser);
+
+    try {
+      const { data: existing, error: fetchErr } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("id", sessionUser.id)
+        .maybeSingle();
+
+      if (fetchErr) {
+        console.error("AuthContext: Error fetching profile:", fetchErr);
+      }
+
+      const shouldUpsert =
+        !existing ||
+        existing.email !== payload.email ||
+        existing.full_name !== payload.full_name ||
+        existing.avatar_url !== payload.avatar_url ||
+        existing.role !== payload.role ||
+        touchLastLogin;
+
+      if (shouldUpsert) {
+        const mergedPayload = {
+          ...(existing || {}),
+          ...payload,
+          last_login_at: touchLastLogin
+            ? payload.last_login_at
+            : existing?.last_login_at || payload.last_login_at,
+          updated_at: new Date().toISOString(),
+        };
+
+        const { error: upsertErr } = await supabase
+          .from("user_profiles")
+          .upsert(mergedPayload, { onConflict: "id" });
+
+        if (upsertErr) {
+          console.error("AuthContext: Error syncing profile:", upsertErr);
+          return { data: existing ?? null, error: upsertErr };
+        }
+      }
+
+      const { data: refreshed, error: refreshedErr } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("id", sessionUser.id)
+        .maybeSingle();
+
+      if (refreshedErr) {
+        console.error("AuthContext: Error reloading profile:", refreshedErr);
+        const fallbackProfile = existing ?? {
+          ...payload,
+          last_login_at: touchLastLogin ? payload.last_login_at : null,
+        };
+        setProfile(fallbackProfile);
+        return { data: fallbackProfile, error: refreshedErr };
+      }
+
+      setProfile(refreshed ?? null);
+      return { data: refreshed ?? null, error: null };
+    } catch (error) {
+      console.error("AuthContext: syncProfileRecord failed:", error);
+      return { data: null, error };
+    }
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    if (!user?.id) {
+      setProfile(null);
+      return { data: null, error: null };
+    }
+
+    return syncProfileRecord(user, { touchLastLogin: false });
+  }, [syncProfileRecord, user]);
+
+  const updateProfile = useCallback(async (updates = {}) => {
+    if (!supabase || !user?.id) {
+      return { data: null, error: new Error("You must be signed in to update your profile.") };
+    }
+
+    const basePayload = buildProfilePayload(user);
+    const payload = {
+      id: user.id,
+      email: user.email,
+      full_name: (updates.full_name || profile?.full_name || basePayload.full_name || "User").trim(),
+      avatar_url: updates.avatar_url ?? profile?.avatar_url ?? basePayload.avatar_url ?? "",
+      role: profile?.role || basePayload.role,
+      last_login_at: profile?.last_login_at || basePayload.last_login_at,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .upsert(payload, { onConflict: "id" })
+      .select("*")
+      .maybeSingle();
+
+    if (!error && data) {
+      setProfile(data);
+    }
+
+    return { data: data ?? null, error: error ?? null };
+  }, [profile?.avatar_url, profile?.full_name, profile?.last_login_at, profile?.role, user]);
 
   useEffect(() => {
     if (!supabase) {
@@ -29,57 +152,9 @@ export function AuthProvider({ children }) {
       if (!sessionUser?.id) return;
 
       try {
-        const { data: profileData, error: fetchErr } = await supabase
-          .from("user_profiles")
-          .select("*")
-          .eq("id", sessionUser.id)
-          .maybeSingle();
-
-        if (fetchErr) {
-          console.error("AuthContext: Error fetching profile on state change:", fetchErr);
-        }
-
-        if (
-          gen === profileLoadGeneration &&
-          !profileData &&
-          (event === "SIGNED_IN" || event === "INITIAL_SESSION")
-        ) {
-          console.log("AuthContext: Attempting to create user profile...");
-          const { error: upsertErr } = await supabase.from("user_profiles").upsert(
-            {
-              id: sessionUser.id,
-              email: sessionUser.email,
-              full_name:
-                sessionUser.user_metadata?.full_name ||
-                sessionUser.email?.split("@")[0] ||
-                "User",
-              avatar_url: sessionUser.user_metadata?.avatar_url || "",
-              role:
-                (sessionUser.email || "").toLowerCase() === ADMIN_EMAIL.toLowerCase()
-                  ? "admin"
-                  : "user",
-              updated_at: new Date().toISOString(),
-            },
-            { onConflict: "id" }
-          );
-
-          if (upsertErr) {
-            console.error("AuthContext: UPSERT ERROR creating profile:", upsertErr);
-          } else {
-            console.log("AuthContext: Successfully created profile inline");
-          }
-        }
-
-        if (gen !== profileLoadGeneration) return;
-
-        const { data: updated } = await supabase
-          .from("user_profiles")
-          .select("*")
-          .eq("id", sessionUser.id)
-          .maybeSingle();
-        if (gen === profileLoadGeneration) {
-          setProfile(updated ?? null);
-        }
+        await syncProfileRecord(sessionUser, {
+          touchLastLogin: event === "SIGNED_IN" || event === "INITIAL_SESSION",
+        });
       } finally {
         if (gen === profileLoadGeneration) {
           setLoading(false);
@@ -119,50 +194,7 @@ export function AuthProvider({ children }) {
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          let { data: prof, error: fetchErr } = await supabase
-            .from("user_profiles")
-            .select("*")
-            .eq("id", session.user.id)
-            .maybeSingle();
-
-          if (fetchErr) {
-            console.error("AuthContext: Error fetching profile on initial load:", fetchErr);
-          }
-
-          if (!prof) {
-            console.log("AuthContext: No profile found on initial session load. Attempting upsert...");
-            const { error: upsertErr } = await supabase.from("user_profiles").upsert(
-              {
-                id: session.user.id,
-                email: session.user.email,
-                full_name:
-                  session.user.user_metadata?.full_name ||
-                  session.user.email?.split("@")[0] ||
-                  "User",
-                avatar_url: session.user.user_metadata?.avatar_url || "",
-                role:
-                  (session.user.email || "").toLowerCase() ===
-                  ADMIN_EMAIL.toLowerCase()
-                    ? "admin"
-                    : "user",
-                updated_at: new Date().toISOString(),
-              },
-              { onConflict: "id" }
-            );
-
-            if (upsertErr) {
-              console.error("AuthContext: UPSERT ERROR creating profile on initial load:", upsertErr);
-            }
-
-            const res = await supabase
-              .from("user_profiles")
-              .select("*")
-              .eq("id", session.user.id)
-              .maybeSingle();
-            prof = res.data;
-          }
-
-          setProfile(prof ?? null);
+          await syncProfileRecord(session.user, { touchLastLogin: true });
         } else {
           setProfile(null);
         }
@@ -180,7 +212,7 @@ export function AuthProvider({ children }) {
       clearTimeout(loadingFailSafe);
       subscription?.unsubscribe?.();
     };
-  }, []);
+  }, [syncProfileRecord]);
 
   const signInWithGoogle = async () => {
     if (!supabase) throw new Error("Supabase not configured");
@@ -249,6 +281,8 @@ export function AuthProvider({ children }) {
     signUp,
     signIn,
     signOut,
+    refreshProfile,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

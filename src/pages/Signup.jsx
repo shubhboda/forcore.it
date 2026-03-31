@@ -21,7 +21,7 @@ export default function Signup() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate(isAdmin ? "/admin" : "/", { replace: true });
+      navigate(isAdmin ? "/admin" : "/profile", { replace: true });
     }
   }, [user, loading, isAdmin, navigate]);
 
@@ -34,7 +34,7 @@ export default function Signup() {
       if (err) throw err;
       if (data?.user) {
         const isAdminUser = (data.user.email || "").toLowerCase() === "shubhboda@gmail.com";
-        navigate(isAdminUser ? "/admin" : "/", { replace: true });
+        navigate(isAdminUser ? "/admin" : "/profile", { replace: true });
       } else {
         setError("Please check your email to confirm your account.");
       }

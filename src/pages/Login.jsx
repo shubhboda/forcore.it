@@ -20,7 +20,7 @@ export default function Login() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate(isAdmin ? "/admin" : "/", { replace: true });
+      navigate(isAdmin ? "/admin" : "/profile", { replace: true });
     }
   }, [user, loading, isAdmin, navigate]);
 
@@ -32,7 +32,7 @@ export default function Login() {
       const { data, error: err } = await signIn(email, password);
       if (err) throw err;
       const isAdminUser = (data?.user?.email || "").toLowerCase() === "shubhboda@gmail.com";
-      navigate(isAdminUser ? "/admin" : "/", { replace: true });
+      navigate(isAdminUser ? "/admin" : "/profile", { replace: true });
     } catch (err) {
       const msg =
         err?.message ||

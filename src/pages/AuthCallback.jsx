@@ -42,7 +42,7 @@ export default function AuthCallback() {
       const email = (session.user.email || "").toLowerCase();
       if (!email) return;
       didNavigate.current = true;
-      navigate(email === ADMIN_EMAIL.toLowerCase() ? "/admin" : "/", { replace: true });
+      navigate(email === ADMIN_EMAIL.toLowerCase() ? "/admin" : "/profile", { replace: true });
     };
 
     async function finish() {

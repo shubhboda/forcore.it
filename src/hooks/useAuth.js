@@ -14,6 +14,8 @@ const devFallback = {
   signUp: async () => notReady(),
   signIn: async () => notReady(),
   signOut: async () => {},
+  refreshProfile: async () => notReady(),
+  updateProfile: async () => notReady(),
 };
 
 export function useAuth() {

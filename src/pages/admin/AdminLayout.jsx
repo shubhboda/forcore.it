@@ -110,8 +110,10 @@ export default function AdminLayout() {
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{user?.email}</p>
-                <p className="text-xs text-cyan-400">{(profile?.role || "admin").toString()}</p>
+                <p className="text-sm font-medium text-white truncate">
+                  {profile?.full_name || user?.email}
+                </p>
+                <p className="text-xs text-cyan-400">{(profile?.role || "user").toString()}</p>
               </div>
             </div>
           </div>

@@ -8,25 +8,26 @@ export default function Team() {
   const [direction, setDirection] = useState(0);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { amount: 0.3 });
+  const AUTO_SLIDE_MS = 6000;
 
   const slideVariants = {
     enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.9
+      x: direction > 0 ? "105%" : "-105%",
+      opacity: 0.35,
+      scale: 0.96,
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
-      scale: 1
+      scale: 1,
     },
     exit: (direction) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.9
-    })
+      x: direction < 0 ? "105%" : "-105%",
+      opacity: 0.35,
+      scale: 0.96,
+    }),
   };
 
   const nextSlide = () => {
@@ -40,14 +41,13 @@ export default function Team() {
   };
 
   useEffect(() => {
-    if (!isInView) return; // Only slide when section is in view
+    if (!isInView || teamMembers.length <= 1) return undefined;
 
-    // CEO (Shubh Boda) slide duration: 7s (for initial pause), Others: 5s
-    const currentMember = teamMembers[currentIndex];
-    const duration = currentMember.role === "CEO & Founder" ? 7000 : 5000;
-    
-    const timer = setInterval(nextSlide, duration);
-    return () => clearInterval(timer);
+    const timer = window.setTimeout(() => {
+      nextSlide();
+    }, AUTO_SLIDE_MS);
+
+    return () => window.clearTimeout(timer);
   }, [currentIndex, isInView]);
 
   const member = teamMembers[currentIndex];
@@ -69,8 +69,8 @@ export default function Team() {
           <p className="text-gray-500 uppercase tracking-[0.2em] text-sm font-medium">Meet Our Leadership Team</p>
         </div>
 
-        <div className="relative min-h-[700px] md:min-h-[550px] lg:h-[550px] w-full flex items-center">
-          <AnimatePresence initial={false} custom={direction} mode="wait">
+        <div className="relative min-h-[700px] md:min-h-[550px] lg:h-[550px] w-full flex items-center overflow-hidden rounded-[32px]">
+          <AnimatePresence initial={false} custom={direction} mode="sync">
             <motion.div
               key={currentIndex}
               custom={direction}
@@ -79,9 +79,9 @@ export default function Team() {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 100, damping: 25 },
-                opacity: { duration: 0.8 },
-                scale: { duration: 0.8 }
+                x: { type: "spring", stiffness: 180, damping: 24, mass: 0.8 },
+                opacity: { duration: 0.22, ease: "easeOut" },
+                scale: { duration: 0.3, ease: "easeOut" },
               }}
               className="absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-8"
             >
