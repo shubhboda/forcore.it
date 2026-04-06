@@ -53,7 +53,7 @@ export default function Team() {
   const member = teamMembers[currentIndex];
 
   return (
-    <section id="team" ref={sectionRef} className="relative min-h-screen min-h-[100dvh] bg-[#0a0a0f] flex items-center justify-center overflow-x-hidden py-16 sm:py-20 px-4 sm:px-6">
+    <section id="team" ref={sectionRef} className="relative min-h-screen min-h-[100dvh] bg-[#0a0a0f] flex items-start lg:items-center justify-center overflow-x-hidden overflow-y-visible py-16 sm:py-20 px-4 sm:px-6">
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
       
@@ -71,7 +71,7 @@ export default function Team() {
           </p>
         </div>
 
-        <div className="relative w-full lg:min-h-[550px] lg:h-[550px] rounded-2xl sm:rounded-[32px] overflow-x-hidden lg:overflow-hidden">
+        <div className="relative w-full max-w-full lg:min-h-[550px] lg:h-[550px] rounded-2xl sm:rounded-[32px] overflow-x-clip overflow-y-visible lg:overflow-hidden">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={currentIndex}
@@ -85,7 +85,7 @@ export default function Team() {
                 opacity: { duration: 0.22, ease: "easeOut" },
                 scale: { duration: 0.3, ease: "easeOut" },
               }}
-              className="relative w-full lg:absolute lg:inset-0 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start lg:items-center py-4 sm:py-8 pb-8 lg:pb-8"
+              className="relative w-full lg:absolute lg:inset-0 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start lg:items-center py-4 sm:py-8 pb-10 sm:pb-12 lg:pb-8"
             >
               {/* Image Side */}
               <div className="flex justify-center lg:justify-end order-1 lg:order-1">
@@ -125,7 +125,7 @@ export default function Team() {
               </div>
 
               {/* Content Side */}
-              <div className="text-center lg:text-left order-2 lg:order-2 space-y-6">
+              <div className="text-center lg:text-left order-2 lg:order-2 flex flex-col gap-6">
                 <div>
                   <motion.span 
                     initial={{ opacity: 0, x: -20 }}
@@ -157,33 +157,20 @@ export default function Team() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="flex flex-wrap gap-3 justify-center lg:justify-start"
-                >
-                  {member.skills.map((skill) => (
-                    <span key={skill} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 text-sm">
-                      {skill}
-                    </span>
-                  ))}
-                </motion.div>
-
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                  className="flex flex-wrap gap-4 sm:gap-6 justify-center lg:justify-start pt-4"
+                  className="order-2 flex flex-wrap gap-4 sm:gap-6 justify-center lg:order-3 lg:justify-start"
                 >
                   {member.portfolio && (
                     <a
                       href={member.portfolio}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-cyan-500 text-black text-sm sm:text-base font-bold hover:bg-cyan-400 transition-all hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] active:scale-95"
+                      className="inline-flex items-center justify-center gap-2 w-full min-[480px]:w-auto min-h-[48px] px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-cyan-500 text-black text-sm sm:text-base font-bold hover:bg-cyan-400 transition-all hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] active:scale-95 shrink-0"
                     >
                       View Portfolio
-                      <ExternalLink className="w-5 h-5" />
+                      <ExternalLink className="w-5 h-5 shrink-0" />
                     </a>
                   )}
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-center gap-4 w-full min-[480px]:w-auto min-[480px]:justify-start">
                     {member.linkedin && member.linkedin !== "#" && (
                       <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 transition-all">
                         <Linkedin className="w-6 h-6" />
@@ -195,6 +182,19 @@ export default function Team() {
                       </a>
                     )}
                   </div>
+                </motion.div>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
+                  className="order-3 flex flex-wrap gap-3 justify-center lg:order-2 lg:justify-start"
+                >
+                  {member.skills.map((skill) => (
+                    <span key={skill} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 text-sm">
+                      {skill}
+                    </span>
+                  ))}
                 </motion.div>
               </div>
             </motion.div>

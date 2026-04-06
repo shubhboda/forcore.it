@@ -16,7 +16,7 @@ import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <div className="app-shell flex min-h-0 min-h-[100dvh] w-full max-w-[100vw] flex-1 flex-col overflow-x-hidden bg-[#0a0a0f]">
+    <div className="app-shell flex min-h-[100dvh] w-full max-w-[100vw] flex-col overflow-x-hidden bg-[#0a0a0f]">
       <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
