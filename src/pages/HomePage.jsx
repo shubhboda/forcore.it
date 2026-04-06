@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#0a0a0f] w-full">
+    <main className="min-h-screen min-h-[100dvh] bg-[#0a0a0f] w-full max-w-[100vw] overflow-x-hidden">
       <Navbar />
       <Hero />
       <FeatureSection />

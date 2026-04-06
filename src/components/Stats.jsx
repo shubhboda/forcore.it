@@ -15,8 +15,8 @@ const testimonials = [
 
 export default function Stats() {
   return (
-    <section className="py-24 px-6 bg-[#0d0d1a]">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#0d0d1a] overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full min-w-0">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -24,10 +24,10 @@ export default function Stats() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="font-[family-name:var(--font-syne)] text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             Why Choose Us
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base px-2">
             Outcomes we stand behind—and partners who trust us with their next bold build.
           </p>
         </motion.div>

@@ -76,15 +76,16 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-12 bg-[#0d0d1a] overflow-hidden border-y border-white/5">
-      <div className="max-w-7xl mx-auto px-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="text-center md:text-left">
-          <h2 className="text-2xl font-bold text-white font-[family-name:var(--font-syne)]">User Feedback</h2>
-          <p className="text-gray-400 text-sm">What our clients say from around the globe.</p>
+    <section className="py-10 sm:py-12 bg-[#0d0d1a] overflow-x-hidden border-y border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6 sm:mb-8 flex flex-col md:flex-row justify-between items-stretch sm:items-center gap-4 w-full min-w-0">
+        <div className="text-center md:text-left min-w-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-white font-[family-name:var(--font-syne)]">User Feedback</h2>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">What our clients say from around the globe.</p>
         </div>
         <button
+          type="button"
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(34,211,238,0.3)] text-sm"
+          className="flex items-center justify-center gap-2 w-full md:w-auto min-h-12 px-6 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all active:scale-95 shadow-[0_0_20px_rgba(34,211,238,0.3)] text-sm touch-manipulation"
         >
           <MessageSquare className="w-4 h-4" />
           Give Feedback
@@ -97,7 +98,7 @@ export default function Testimonials() {
           {[...testimonials, ...testimonials].map((item, idx) => (
             <div
               key={idx}
-              className="inline-block mx-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 min-w-[300px] max-w-[400px] whitespace-normal hover:border-cyan-400/30 transition-colors"
+              className="inline-block mx-2 sm:mx-4 p-4 sm:p-6 rounded-2xl bg-white/[0.02] border border-white/5 min-w-[min(88vw,300px)] max-w-[400px] whitespace-normal hover:border-cyan-400/30 transition-colors"
             >
               <div className="flex justify-between items-start mb-3">
                 <div>
@@ -124,12 +125,12 @@ export default function Testimonials() {
       {/* Feedback Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}>
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto" onClick={() => setIsModalOpen(false)}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-[#0d0d1a] border border-white/10 rounded-2xl p-8 shadow-2xl"
+              className="relative w-full max-w-md max-h-[90dvh] overflow-y-auto bg-[#0d0d1a] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl my-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button

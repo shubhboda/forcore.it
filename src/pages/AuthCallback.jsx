@@ -105,9 +105,9 @@ export default function AuthCallback() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-6">
-      <div className="w-full max-w-md rounded-2xl bg-white/[0.03] border border-white/10 p-8 shadow-xl shadow-black/20">
-        <div className="text-white text-lg font-semibold">Signing you in</div>
+    <div className="min-h-[100dvh] min-h-screen w-full bg-[#0a0a0f] flex items-center justify-center px-4 py-8 sm:p-6 overflow-x-hidden">
+      <div className="w-full max-w-md min-w-0 rounded-2xl bg-white/[0.03] border border-white/10 p-5 sm:p-8 shadow-xl shadow-black/20">
+        <div className="text-white text-base sm:text-lg font-semibold">Signing you in</div>
         <div className="mt-2 text-sm text-gray-400">{message}</div>
         {!hasSupabase && (
           <div className="mt-4 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">

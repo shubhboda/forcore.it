@@ -67,14 +67,14 @@ export default function Login() {
     error?.includes("incomplete");
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-6">
+    <div className="min-h-[100dvh] min-h-screen w-full bg-[#0a0a0f] flex items-center justify-center px-4 py-8 sm:p-6 overflow-x-hidden">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="w-full max-w-md"
+        className="w-full max-w-md min-w-0"
       >
-        <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 shadow-xl shadow-black/20">
+        <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-5 sm:p-8 shadow-xl shadow-black/20">
           <div className="flex items-center gap-2 mb-8">
             <LogoIcon className="w-10 h-10" />
             <span className="font-[family-name:var(--font-syne)] font-bold text-2xl text-white tracking-tight">

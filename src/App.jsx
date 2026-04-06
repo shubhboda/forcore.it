@@ -16,7 +16,8 @@ import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <Routes>
+    <div className="app-shell flex min-h-0 min-h-[100dvh] w-full max-w-[100vw] flex-1 flex-col overflow-x-hidden bg-[#0a0a0f]">
+      <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
@@ -47,7 +48,8 @@ function App() {
         <Route path="users" element={<AdminUsers />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+      </Routes>
+    </div>
   );
 }
 

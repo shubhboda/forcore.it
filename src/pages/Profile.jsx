@@ -50,15 +50,15 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
-        <div className="text-gray-400 animate-pulse">Loading your profile...</div>
+      <div className="min-h-[100dvh] min-h-screen w-full bg-[#0a0a0f] flex items-center justify-center px-4">
+        <div className="text-gray-400 animate-pulse text-sm sm:text-base text-center">Loading your profile...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] px-6 py-8 md:py-10">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-[100dvh] min-h-screen w-full bg-[#0a0a0f] px-4 sm:px-6 py-6 sm:py-8 md:py-10 overflow-x-hidden">
+      <div className="max-w-5xl mx-auto w-full min-w-0">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
             <LogoIcon className="w-10 h-10" />

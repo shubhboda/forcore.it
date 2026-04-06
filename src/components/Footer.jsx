@@ -17,8 +17,8 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-[#0a0a0f]">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+    <footer className="border-t border-white/5 bg-[#0a0a0f] overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 w-full min-w-0">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -70,11 +70,11 @@ export default function Footer() {
             </div>
           </div>
         </motion.div>
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
+        <div className="mt-10 sm:mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+          <p className="text-gray-500 text-xs sm:text-sm">
             © 2025 forcore.it. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
             <a href="#" className="text-gray-500 hover:text-gray-400 text-sm">
               Privacy Policy
             </a>

@@ -69,12 +69,12 @@ export default function BookCall({ isOpen, onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md" onClick={onClose}>
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/90 backdrop-blur-md overflow-y-auto" onClick={onClose}>
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-2xl bg-[#0d0d1a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+            className="relative w-full max-w-2xl max-h-[100dvh] sm:max-h-[90dvh] overflow-y-auto bg-[#0d0d1a] border border-white/10 rounded-t-3xl sm:rounded-3xl sm:overflow-hidden shadow-2xl my-0 sm:my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {isSuccess ? (
@@ -87,15 +87,15 @@ export default function BookCall({ isOpen, onClose }) {
                   <CheckCircle className="w-10 h-10 text-cyan-400" />
                 </motion.div>
                 <h3 className="text-3xl font-bold text-white font-[family-name:var(--font-syne)]">Booking Confirmed!</h3>
-                <p className="text-gray-400">We've received your request for a free call. Our team will reach out to you shortly at {formData.email}.</p>
+                <p className="text-gray-400 text-sm sm:text-base px-1">We&apos;ve received your request for a free call. Our team will reach out to you shortly at {formData.email}.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-5 h-full">
                 {/* Left Side - Info */}
-                <div className="md:col-span-2 bg-cyan-500 p-8 text-black flex flex-col justify-between">
+                <div className="md:col-span-2 bg-cyan-500 p-6 sm:p-8 text-black flex flex-col justify-between gap-6">
                   <div>
-                    <h3 className="text-3xl font-bold font-[family-name:var(--font-syne)] mb-4 text-black">Book a Free Strategy Call</h3>
-                    <p className="text-black/80 font-medium">Let's discuss your project and how we can help you scale your business with world-class software.</p>
+                    <h3 className="text-2xl sm:text-3xl font-bold font-[family-name:var(--font-syne)] mb-3 sm:mb-4 text-black">Book a Free Strategy Call</h3>
+                    <p className="text-black/80 font-medium text-sm sm:text-base">Let&apos;s discuss your project and how we can help you scale your business with world-class software.</p>
                   </div>
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 text-sm font-bold">
@@ -114,8 +114,8 @@ export default function BookCall({ isOpen, onClose }) {
                 </div>
 
                 {/* Right Side - Form */}
-                <div className="md:col-span-3 p-8 relative">
-                  <button onClick={onClose} className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors">
+                <div className="md:col-span-3 p-5 sm:p-8 relative pb-8 sm:pb-8">
+                  <button type="button" onClick={onClose} className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 text-gray-400 hover:text-white transition-colors z-10" aria-label="Close">
                     <X className="w-6 h-6" />
                   </button>
                   

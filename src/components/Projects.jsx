@@ -45,13 +45,13 @@ export default function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="py-24 px-6 bg-[#0a0a0f]">
-      <div className="max-w-7xl mx-auto">
+    <section id="projects" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#0a0a0f] overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full min-w-0">
         <div className="text-center mb-12">
-          <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="font-[family-name:var(--font-syne)] text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             Our Work
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base px-2">
             A snapshot of products and platforms we&apos;ve shipped—craft, performance, and clarity in every release.
           </p>
         </div>
@@ -71,9 +71,13 @@ export default function Projects() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-                whileHover={{ y: -10, rotateX: 2, rotateY: -2, scale: 1.02 }}
-                className="group relative overflow-hidden rounded-2xl bg-white/[0.02] border border-white/5 transition-all shadow-[0_0_0_rgba(34,211,238,0)] hover:shadow-[0_20px_40px_-10px_rgba(34,211,238,0.3)] hover:border-cyan-400/50"
-                style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
+                whileHover={{
+                  y: -6,
+                  scale: 1.02,
+                  transition: { duration: 0.2 },
+                }}
+                whileTap={{ scale: 0.99 }}
+                className="group relative overflow-hidden rounded-2xl bg-white/[0.02] border border-white/5 transition-all shadow-[0_0_0_rgba(34,211,238,0)] hover:shadow-[0_20px_40px_-10px_rgba(34,211,238,0.3)] hover:border-cyan-400/50 touch-manipulation md:transition-transform"
               >
                 <div className="aspect-video relative overflow-hidden bg-gradient-to-br from-cyan-500/10 to-blue-500/10 flex items-center justify-center">
                   {project.image ? (

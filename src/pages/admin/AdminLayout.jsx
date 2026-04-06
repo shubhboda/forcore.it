@@ -58,7 +58,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex overflow-hidden">
+    <div className="min-h-[100dvh] min-h-screen w-full max-w-[100vw] bg-[#0a0a0f] flex overflow-hidden">
       {/* Sidebar */}
       <aside
         className={`fixed lg:static inset-y-0 left-0 z-40 w-64 bg-[#0d0d1a] border-r border-white/5 transform transition-transform lg:translate-x-0 ${
@@ -131,26 +131,28 @@ export default function AdminLayout() {
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-20 bg-[#0a0a0f]/90 backdrop-blur border-b border-white/5 px-6 py-4 flex items-center gap-4">
+        <header className="sticky top-0 z-20 bg-[#0a0a0f]/90 backdrop-blur border-b border-white/5 px-3 sm:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4 min-w-0">
           <button
+            type="button"
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 text-gray-400 hover:text-white"
+            className="lg:hidden shrink-0 min-h-11 min-w-11 flex items-center justify-center p-2 text-gray-400 hover:text-white touch-manipulation"
+            aria-label="Open menu"
           >
             <Menu className="w-5 h-5" />
           </button>
-          <h1 className="font-[family-name:var(--font-syne)] font-bold text-white flex-1">
+          <h1 className="font-[family-name:var(--font-syne)] font-bold text-white flex-1 min-w-0 text-base sm:text-lg md:text-xl truncate">
             forcore.it Admin
           </h1>
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all font-medium text-sm"
+            className="flex items-center justify-center gap-1.5 sm:gap-2 shrink-0 min-h-11 px-2.5 sm:px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all font-medium text-xs sm:text-sm touch-manipulation"
           >
-            <LogOut className="w-4 h-4" />
-            <span>Sign Out</span>
+            <LogOut className="w-4 h-4 shrink-0" />
+            <span className="hidden min-[380px]:inline">Sign Out</span>
           </button>
         </header>
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-x-auto overflow-y-auto min-w-0">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

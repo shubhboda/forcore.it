@@ -90,9 +90,9 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 px-6 bg-[#0a0a0f]">
+    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#0a0a0f] overflow-x-hidden">
       <BookCall isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto w-full min-w-0">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,10 +100,10 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="font-[family-name:var(--font-syne)] text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 px-2">
             Let&apos;s Build Something Together
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base px-2">
             Share your brief, timeline, and ambition—we respond within one business day with next steps, not filler.
           </p>
         </motion.div>
@@ -153,7 +153,7 @@ export default function Contact() {
                 <Mail className="w-5 h-5 text-cyan-400" />
                 <span className="text-white font-medium">Email</span>
               </div>
-              <a href="mailto:support.forcor.it@gmail.com" className="text-gray-400 hover:text-cyan-400 transition-colors">support.forcor.it@gmail.com</a>
+              <a href="mailto:support.forcor.it@gmail.com" className="text-gray-400 hover:text-cyan-400 transition-colors text-sm break-all sm:break-normal">support.forcor.it@gmail.com</a>
             </div>
             <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 transition-colors">
               <div className="flex items-center gap-3 mb-4">

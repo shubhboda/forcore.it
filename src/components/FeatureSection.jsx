@@ -10,12 +10,12 @@ export default function FeatureSection() {
   ];
 
   return (
-    <section className="relative py-24 bg-[#0a0a0f] overflow-hidden">
+    <section className="relative py-16 sm:py-24 bg-[#0a0a0f] overflow-x-hidden">
       {/* Background soft glow */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] -mr-64 -mt-64" />
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 sm:mb-24">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -23,18 +23,18 @@ export default function FeatureSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-[family-name:var(--font-syne)] text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+            <h2 className="font-[family-name:var(--font-syne)] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8 leading-tight">
               We elevate your <br />
               <span className="text-cyan-400">business</span> to new levels.
             </h2>
-            <p className="text-gray-400 text-lg mb-10 max-w-lg leading-relaxed">
+            <p className="text-gray-400 text-base sm:text-lg mb-8 sm:mb-10 max-w-lg leading-relaxed">
               Your problems aren’t generic—neither are our builds. We pair modern stack choices with clear ownership so you scale with confidence, not guesswork.
             </p>
             
             <div className="flex flex-wrap gap-4 mb-16">
               <a 
                 href="#contact" 
-                className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all active:scale-95 inline-block"
+                className="w-full sm:w-auto text-center px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all active:scale-95 inline-block"
               >
                 Get Started
               </a>
@@ -126,11 +126,11 @@ export default function FeatureSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-[#0d0d1a] p-10 flex flex-col items-center text-center group hover:bg-white/[0.03] transition-colors"
+              className="bg-[#0d0d1a] p-6 sm:p-10 flex flex-col items-center text-center group hover:bg-white/[0.03] transition-colors"
             >
               <metric.icon className="w-8 h-8 text-cyan-400 mb-6 group-hover:scale-110 transition-transform" />
-              <p className="text-4xl font-bold text-white mb-4">{metric.value}</p>
-              <p className="text-gray-400 text-sm leading-relaxed">{metric.label}</p>
+              <p className="text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">{metric.value}</p>
+              <p className="text-gray-400 text-xs sm:text-sm leading-relaxed max-w-[14rem]">{metric.label}</p>
             </motion.div>
           ))}
         </div>
