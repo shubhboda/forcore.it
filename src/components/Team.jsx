@@ -91,10 +91,10 @@ export default function Team() {
               <div className="flex justify-center lg:justify-end order-1 lg:order-1">
                 <div className="relative group">
                   <div className="absolute -inset-4 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-cyan-500/30 transition-colors duration-500" />
-                  <div className="relative w-[13.5rem] h-[13.5rem] min-[400px]:w-64 min-[400px]:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl mx-auto">
+                  <div className="relative w-[16.25rem] h-[16.25rem] sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl mx-auto">
                     {member.photoFallback === null ? (
                       <div className="w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
-                        <span className="text-6xl font-bold text-cyan-400">{member.name.split(' ').map(n => n[0]).join('')}</span>
+                        <span className="text-7xl sm:text-8xl font-bold text-cyan-400">{member.name.split(' ').map(n => n[0]).join('')}</span>
                       </div>
                     ) : (
                       <img
@@ -164,10 +164,10 @@ export default function Team() {
                       href={member.portfolio}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 w-full min-[480px]:w-auto min-h-[48px] px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-cyan-500 text-black text-sm sm:text-base font-bold hover:bg-cyan-400 transition-all hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] active:scale-95 shrink-0"
+                      className="inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full min-[480px]:w-auto min-h-10 sm:min-h-11 px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-3.5 rounded-lg sm:rounded-xl bg-cyan-500 text-black text-xs sm:text-sm md:text-base font-bold hover:bg-cyan-400 transition-all hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] active:scale-95 shrink-0"
                     >
                       View Portfolio
-                      <ExternalLink className="w-5 h-5 shrink-0" />
+                      <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 shrink-0" />
                     </a>
                   )}
                   <div className="flex items-center justify-center gap-4 w-full min-[480px]:w-auto min-[480px]:justify-start">
