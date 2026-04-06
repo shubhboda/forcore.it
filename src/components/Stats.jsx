@@ -8,9 +8,9 @@ const stats = [
 ];
 
 const testimonials = [
-  { name: "Sarah Mitchell", country: "🇺🇸 USA", rating: 5, quote: "Exceptional work on our AI chatbot. Delivered ahead of schedule with zero compromise on quality." },
-  { name: "James Chen", country: "🇬🇧 UK", rating: 5, quote: "The team understood our vision perfectly. Highly recommend for any tech project." },
-  { name: "Emma Foster", country: "🇦🇺 Australia", rating: 5, quote: "Professional, responsive, and skilled. Our dashboard is exactly what we needed." },
+  { name: "Sarah Mitchell", country: "🇺🇸 USA", rating: 5, quote: "Our AI assistant shipped early and runs like production infrastructure—not a demo. Rare blend of product thinking and engineering rigor." },
+  { name: "James Chen", country: "🇬🇧 UK", rating: 5, quote: "They internalized our roadmap faster than most agencies—we moved from concept to shipped feature set without drama." },
+  { name: "Emma Foster", country: "🇦🇺 Australia", rating: 5, quote: "The dashboard finally matches how our team works: fast, clear, and ready to grow with us." },
 ];
 
 export default function Stats() {
@@ -28,7 +28,7 @@ export default function Stats() {
             Why Choose Us
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Numbers that speak for themselves — and clients who vouch for us.
+            Outcomes we stand behind—and partners who trust us with their next bold build.
           </p>
         </motion.div>
 

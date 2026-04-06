@@ -4,11 +4,11 @@ import { MessageSquare, X, Star, Globe } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
 const initialTestimonials = [
-  { id: 1, name: "Alex Rivera", country: "USA", content: "The AI automation they built for us is a game changer. Highly recommended!", rating: 5 },
-  { id: 2, name: "Siddharth Mehta", country: "India", content: "Excellent web development services. Professional and on time.", rating: 5 },
-  { id: 3, name: "Sarah Johnson", country: "UK", content: "Great communication and top-notch UI/UX design. Love the results!", rating: 4 },
-  { id: 4, name: "Chen Wei", country: "China", content: "Fast delivery and very smart AI integration. Will work again.", rating: 5 },
-  { id: 5, name: "Elena Petrova", country: "Russia", content: "The best tech team for startup MVPs. Very satisfied.", rating: 5 },
+  { id: 1, name: "Alex Rivera", country: "USA", content: "Their AI automation reshaped how we operate—clear architecture, measurable ROI, and a partner who actually owns outcomes.", rating: 5 },
+  { id: 2, name: "Siddharth Mehta", country: "India", content: "Enterprise-grade delivery: crisp communication, disciplined timelines, and code we’re confident scaling in production.", rating: 5 },
+  { id: 3, name: "Sarah Johnson", country: "UK", content: "Outstanding UX craft paired with engineering depth—the product looks world-class and performs like it.", rating: 5 },
+  { id: 4, name: "Chen Wei", country: "China", content: "Rapid execution without cutting corners on AI integration. Already planning our next phase together.", rating: 5 },
+  { id: 5, name: "Elena Petrova", country: "Russia", content: "The team you want for a real MVP: strategic, fast, and obsessed with shipping something users actually keep.", rating: 5 },
 ];
 
 export default function Testimonials() {

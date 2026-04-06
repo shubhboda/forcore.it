@@ -28,7 +28,7 @@ export default function FeatureSection() {
               <span className="text-cyan-400">business</span> to new levels.
             </h2>
             <p className="text-gray-400 text-lg mb-10 max-w-lg leading-relaxed">
-              Every business is unique, and so are our solutions. Our cutting-edge technology helps you scale efficiently and effectively.
+              Your problems aren’t generic—neither are our builds. We pair modern stack choices with clear ownership so you scale with confidence, not guesswork.
             </p>
             
             <div className="flex flex-wrap gap-4 mb-16">

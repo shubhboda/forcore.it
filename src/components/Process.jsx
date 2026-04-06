@@ -23,7 +23,7 @@ export default function Process() {
             Our Process
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            From idea to launch — a proven workflow that keeps projects on track.
+            Idea to launch with predictable milestones—structured discovery, visible progress, and zero mystery in delivery.
           </p>
         </motion.div>
 

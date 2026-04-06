@@ -31,7 +31,7 @@ export default function Login() {
     try {
       const { data, error: err } = await signIn(email, password);
       if (err) throw err;
-      const isAdminUser = (data?.user?.email || "").toLowerCase() === "shubhboda@gmail.com";
+      const isAdminUser = (data?.user?.email || "").toLowerCase() === "support.forcor.it@gmail.com";
       navigate(isAdminUser ? "/admin" : "/profile", { replace: true });
     } catch (err) {
       const msg =

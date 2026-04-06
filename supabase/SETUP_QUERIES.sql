@@ -122,8 +122,37 @@ CREATE POLICY "Admin read all profiles" ON user_profiles FOR SELECT USING (
 DROP POLICY IF EXISTS "Allow insert own profile" ON user_profiles;
 CREATE POLICY "Allow insert own profile" ON user_profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
--- 5. Optional: DB trigger (client also creates profile if this fails)
--- Run this if you want server-side profile creation:
+-- 5. PAYMENTS (Razorpay — rows inserted only via service role / backend)
+CREATE TABLE IF NOT EXISTS payments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  razorpay_order_id TEXT NOT NULL,
+  razorpay_payment_id TEXT NOT NULL,
+  amount_minor INT NOT NULL,
+  currency TEXT NOT NULL,
+  status TEXT NOT NULL,
+  method TEXT,
+  email TEXT,
+  contact TEXT,
+  international BOOLEAN DEFAULT false,
+  razorpay_payload JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  CONSTRAINT payments_payment_id_unique UNIQUE (razorpay_payment_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_payments_order_id ON payments (razorpay_order_id);
+CREATE INDEX IF NOT EXISTS idx_payments_created_at ON payments (created_at DESC);
+
+ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
+
+-- No public access; backend uses SUPABASE_SERVICE_ROLE_KEY (bypasses RLS).
+
+DROP POLICY IF EXISTS "Admin read payments" ON payments;
+CREATE POLICY "Admin read payments" ON payments FOR SELECT USING (
+  auth.jwt() ->> 'email' = 'shubhboda@gmail.com'
+);
+
+-- 6. Optional: DB trigger (client also creates profile if this fails)
+-- Run if you want server-side profile creation:
 -- CREATE OR REPLACE FUNCTION public.handle_new_user()
 -- RETURNS TRIGGER AS $$
 -- BEGIN

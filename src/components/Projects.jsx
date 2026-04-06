@@ -52,7 +52,7 @@ export default function Projects() {
             Our Work
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Projects we&apos;ve built for our clients.
+            A snapshot of products and platforms we&apos;ve shipped—craft, performance, and clarity in every release.
           </p>
         </div>
 

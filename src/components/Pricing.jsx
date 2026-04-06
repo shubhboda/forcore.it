@@ -33,15 +33,41 @@ const fallbackPlans = [
   },
   { 
     id: 3, 
-    name: "Mobile & Ads", 
-    tagline: "Apps & Digital Growth", 
-    price: "$300 – $5000+", 
+    name: "Android & iOS Apps", 
+    tagline: "High-performance mobile solutions", 
+    price: "$500 – $8000+", 
     features: [
-      "Basic ($300-$800): Simple app / ads setup",
-      "Standard ($800-$2000): App + ads + analytics",
-      "Premium ($2000-$5000+): Custom App & High-level ads"
+      "Basic ($500-$1500): Simple MVP / Utility App",
+      "Standard ($1500-$4000): Full App + Backend + Play Store",
+      "Premium ($4000-$8000+): Scalable App, Custom Features, Support"
     ], 
-    cta: "Scale My Brand", 
+    cta: "Build My App", 
+    popular: false 
+  },
+  { 
+    id: 4, 
+    name: "Video Editing", 
+    tagline: "Professional cinematic storytelling", 
+    price: "$50 – $1500+", 
+    features: [
+      "Basic ($50-$200): Simple cuts, basic transitions",
+      "Standard ($200-$600): Color grading, audio sync, titles",
+      "Premium ($600-$1500+): Complex VFX, motion graphics, 4K"
+    ], 
+    cta: "Start My Video", 
+    popular: false 
+  },
+  { 
+    id: 5, 
+    name: "Digital Marketing", 
+    tagline: "Full-scale brand growth & strategy", 
+    price: "$200 – $5000+", 
+    features: [
+      "Basic ($200-$700): Social media setup, basic SEO",
+      "Standard ($700-$2000): Ads management, content strategy",
+      "Premium ($2000-$5000+): Growth funnels, full-funnel ads"
+    ], 
+    cta: "Scale My Business", 
     popular: false 
   },
 ];
@@ -52,24 +78,18 @@ export default function Pricing() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
-    if (!supabase) {
-      return;
-    }
+    if (!supabase) return;
 
     async function fetchPlans() {
-      const timeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Timeout")), 5000)
-      );
-
+      setLoading(true);
       try {
-        const fetchPromise = supabase
+        const { data, error } = await supabase
           .from("plans")
           .select("*")
           .order("sort_order", { ascending: true });
-
-        const { data, error } = await Promise.race([fetchPromise, timeout]);
         
-        if (!error && data?.length) {
+        // If we have data in Supabase (even if just one plan), show it
+        if (!error && data && data.length > 0) {
           setPlans(data.map((p) => ({
             id: p.id,
             name: p.name,
@@ -79,9 +99,11 @@ export default function Pricing() {
             cta: p.cta ?? "Get Started",
             popular: p.popular ?? false,
           })));
+        } else if (error) {
+          console.error("Supabase error:", error.message);
         }
       } catch (err) {
-        console.error("Failed to fetch plans or timed out:", err);
+        console.error("Failed to fetch plans:", err);
       } finally {
         setLoading(false);
       }
@@ -98,7 +120,7 @@ export default function Pricing() {
             Our Pricing Plans
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Affordable solutions for your digital success. All prices in USD.
+            Transparent tiers, serious outcomes—investment that maps to scope and value. Figures shown in USD.
           </p>
         </div>
 

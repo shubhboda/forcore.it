@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+// import PayNow from "./PayNow";
 
 export default function Hero() {
   return (
@@ -21,29 +22,21 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
 
 
-        <motion.h1 
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="font-[family-name:var(--font-syne)] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6"
-        >
+        <h1 className="font-[family-name:var(--font-syne)] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
           We Build <br className="md:hidden" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 animate-gradient-x">
             Futuristic
           </span>
           <br />
           Software.
-        </motion.h1>
+        </h1>
 
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10"
-        >
-          From simple websites to full AI-powered systems — we deliver modern tech
-          solutions for businesses worldwide.
-        </motion.p>
+        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+          From polished web experiences to full AI-native products — we design, build, and ship
+          dependable software for teams that refuse to settle for average.
+        </p>
+
+        {/* <PayNow /> */}
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none" />

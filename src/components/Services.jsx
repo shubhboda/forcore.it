@@ -17,7 +17,7 @@ export default function Services() {
             What We Build
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            End-to-end tech solutions from AI to design — tailored for your business.
+            Full-stack delivery from intelligent automation to product design — shaped around your goals and built to perform in production.
           </p>
         </motion.div>
 

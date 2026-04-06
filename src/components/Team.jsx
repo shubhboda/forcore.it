@@ -66,7 +66,9 @@ export default function Team() {
           >
             The Minds Behind <span className="text-cyan-400">forcore.it</span>
           </motion.h2>
-          <p className="text-gray-500 uppercase tracking-[0.2em] text-sm font-medium">Meet Our Leadership Team</p>
+          <p className="text-gray-500 uppercase tracking-[0.2em] text-sm font-medium">
+            Builders who own delivery—from strategy to shipped software
+          </p>
         </div>
 
         <div className="relative min-h-[700px] md:min-h-[550px] lg:h-[550px] w-full flex items-center overflow-hidden rounded-[32px]">
@@ -98,8 +100,19 @@ export default function Team() {
                       <img
                         src={member.photo}
                         alt={member.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        style={{ objectPosition: member.imagePosition || "center" }}
+                        className={`w-full h-full object-cover transition-transform duration-700 ${
+                          member.imageZoom == null ? "group-hover:scale-110" : ""
+                        }`}
+                        style={{
+                          objectPosition: member.imagePosition || "center",
+                          ...(member.imageZoom != null
+                            ? {
+                                transform: `scale(${member.imageZoom})`,
+                                transformOrigin:
+                                  member.imageTransformOrigin || "center center",
+                              }
+                            : {}),
+                        }}
                         crossOrigin="anonymous"
                         onError={(e) => {
                           e.target.onerror = null;

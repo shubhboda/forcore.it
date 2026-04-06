@@ -34,7 +34,7 @@ export default function Footer() {
               </span>
             </a>
             <p className="text-gray-400 text-sm">
-              Building the future, one line at a time.
+              Intelligent software, engineered for clarity, speed, and lasting impact.
             </p>
           </div>
           <div>
